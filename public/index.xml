@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Terminal</title>
+    <link>/</link>
+    <description>Recent content on Terminal</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 22 Apr 2025 17:27:21 +0200</lastBuildDate>
+    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Welcome</title>
+      <link>/posts/2025/20250422-welcome/</link>
+      <pubDate>Tue, 22 Apr 2025 17:27:21 +0200</pubDate>
+      <guid>/posts/2025/20250422-welcome/</guid>
+      <description>&lt;p&gt;As the title so succinctly put it, welcome to my blog! I did not think I&#xA;would ever write one, but here we are.&lt;/p&gt;&#xA;&lt;p&gt;I aim to write about my experiences running an OpenBSD server and anything&#xA;related to that, as well as other software-related topics that catch my&#xA;interest.&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve long had an interest in OpenBSD due to their security focus, but did not&#xA;have anything to run it on. Searching for VPS providers, I only found providers&#xA;supporting some Linux distributions or maybe Windows. Digital Ocean was the most&#xA;promising one I found as they supported FreeBSD and I thought it would be&#xA;possible to get OpenBSD running there as well. They unfortunately ended support&#xA;for FreeBSD back in 2022 so I considered that a dead end. I&amp;rsquo;ve seen various&#xA;&amp;ldquo;hacks&amp;rdquo; to get OpenBSD running by installing Linux first, then booting into&#xA;the recovery image, download the installer and re-format the disk, but I did&#xA;not want to try that. I was looking for someone officially supporting OpenBSD by having&#xA;images for it already, or at least having the option to upload a custom image for&#xA;installation.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>About this blog</title>
+      <link>/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/about/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m writing this before I&amp;rsquo;ve even begun, so what this blog will eventually be&#xA;about is actually unknown at this point in time. I have a plan, though.&lt;/p&gt;&#xA;&lt;p&gt;I am generally interested in software and how to develop/build/run it, and I find&#xA;the learning process rewarding. To reinforce and help me remember what I learn I&#xA;find it helpful to write it down as I go along. Doing that in public as I&amp;rsquo;m doing&#xA;here is a little bit scary, but hopefully it will push me to do a little bit&#xA;better than just notes in a notebook just for myself. I hope this will also help&#xA;me let me know if I know the topic as well as I think I do or not. If I can&amp;rsquo;t&#xA;explain it well enough to to others so I think they would understand it, I&#xA;probably don&amp;rsquo;t. I find it is also helpful having my own words to look back on if&#xA;and when I want to revisit a subject.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Mastodon</title>
+      <link>/mastodon/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/mastodon/</guid>
+      <description>&lt;p&gt;If you want to reach me, I can be found on Mastodon as &lt;a href=&#34;https://mastodon.bsd.cafe/@noexec&#34;&gt;@noexec@bsd.cafe&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
