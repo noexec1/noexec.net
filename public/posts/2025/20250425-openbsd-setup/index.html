@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Initial OpenBSD setup and configuration :: Terminal</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Having just ordered an OpenBSD VPS which is now online and exposed to the world, let&#39;s lock it down a little by changing the SSH config as well as the firewall rules." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="/posts/2025/20250425-openbsd-setup/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="/css/code.min.4f0ccc8439f99bf7f7970298556b94011aabc1fcae743b6842fc3361a2da9ea3.css">
+
+  
+  <link rel="stylesheet" href="/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="/css/main.min.15870410d15d02abd22fb5ef00996f65a00d04b3a7435e9f83831c7c2298de88.css">
+
+  
+  <link rel="stylesheet" href="/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Initial OpenBSD setup and configuration">
+<meta property="og:description" content="Having just ordered an OpenBSD VPS which is now online and exposed to the world, let&#39;s lock it down a little by changing the SSH config as well as the firewall rules." />
+<meta property="og:url" content="/posts/2025/20250425-openbsd-setup/" />
+<meta property="og:site_name" content="Terminal" />
+
+  <meta property="og:image" content="/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2025-04-25 19:10:56 &#43;0200 CEST" />
+
+
+
+
+
+
+
+
+
+<link rel="preload" href="/fonts/FiraCode-Latin.woff2" as="font" type="font/woff2" crossorigin />
+
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    noexec.net
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about/">about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/">mastodon</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about/" >about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/" >mastodon</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="/posts/2025/20250425-openbsd-setup/">Initial OpenBSD setup and configuration</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2025-04-25</time></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <h2 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Having just ordered an OpenBSD VPS which is now online and exposed to the world,
+I want to  lock it down a little by changing the SSH config as well as the firewall
+rules.</p>
+<h2 id="ssh">SSH<a href="#ssh" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>I like to start by disabling direct root-login, as well as disabling password
+logins. The reason being that there are bots constantly scanning every IPv4
+address on the internet, looking for known vulnerabilities I guess, as well as
+some bots trying to log in through SSH. By disabling password-logins
+you efficiently stop their brute-force attempts on passwords, and if you have <code>doas</code>
+set up like you should, there is no reason to log in directly as root either.</p>
+<p>If you follow what I am doing here, be a little careful so you don&rsquo;t
+inadvertently lock yourself out, or be prepared to log in on the console to fix
+your mistake. It&rsquo;s probably a good idea to try the console login before making
+changes like this to make sure you can recover if something goes bad.</p>
+<p>I edit <code>/etc/ssh/sshd_config</code> with <code>vi</code> using doas, and find the <code>PermitRootLogin</code>
+line. As this is written after the fact, I don&rsquo;t remember exactly what I did,
+but the end result is that the line should be uncommented and contain the value <code>no</code>
+like this:</p>
+<pre tabindex="0"><code>PermitRootLogin no
+</code></pre><p>Then I found the <code>PasswordAuthentication</code> line, uncommented it and again made sure the value was <code>no</code>.</p>
+<p>I saved the file and restarted sshd to make the changes take effect: <code>doas rcctl restart sshd</code></p>
+<p>Here the fun begins. If I have made any mistakes I could easily lock myself out of the server.
+Fortunately the connection was kept, so I let that window be, and in another window tried to
+log in with SSH again. It worked! If not I could have used the previous window and connection
+to fix my mistake, but that was not necessary this time.</p>
+<h2 id="firewall">Firewall<a href="#firewall" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>The next order of business I would say is to close down the firewall. The default rules are quite
+permissive, as they allow connections to every port as long as they are &ldquo;correct&rdquo; and would be
+able to establish a stateful-connection. TCP packets containing just the F-flag or something
+similar would not be allowed, as that is not how you establish a TCP connection.</p>
+<pre tabindex="0"><code>set skip on lo
+
+block return   # block stateless traffic
+pass           # establish keep-state
+
+# By default, do not permit remote connections to X11
+block return in on ! lo0 proto tcp to port 6000:6010
+
+# Port build user does not need network
+block return out log proto {tcp udp} user _pbuild
+</code></pre><p>The reason I&rsquo;m putting this second is because OpenBSD doesn&rsquo;t run many network
+services by default, so there aren&rsquo;t many ports open to the internet. Only
+two, actually. The first is SSH, tcp port 22, and the second is DHCP, udp port 68.</p>
+<p>I have a somewhat static ip-address which I have for months at a time, so I&rsquo;ve
+set up SSH to only be available from my address. DHCP only needs outgoing
+traffic to the best of my knowledge so I only allow that.</p>
+<p>I also prefer to simply drop traffic and not return anything to make it seem
+like the IP of the server is not in use.</p>
+<p>If your ip is very dynamic so you need to allow logins from everyone, replace
+the ip address with the word <code>any</code>.</p>
+<p>My initial, revised rules then looks like this:</p>
+<pre tabindex="0"><code>set skip on lo
+
+block drop
+pass out on vio0
+
+## SSH
+pass in from 192.0.2.2 to any port 22
+
+# To allow ssh for everyone, remove the previous line and add this instead:
+# pass in from any to any port 22
+
+# Explicitly allow outgoing dhcp
+pass out proto udp from any port 68 to any port 67
+
+# Port build user does not need network
+block return out log proto {tcp udp} user _pbuild
+</code></pre><p>A word of warning, this will break IPv6 should you be using that! If you are using IPv6 to connect,
+your connection will freeze and then drop should you try to load these rules, so be warned. I&rsquo;ll
+get back to how to allow IPv6 below as it needs more explanation. This is also not my actual IP,
+but one made available for documentation pruposes. It should not be routed on the internet.</p>
+<p><code>pf</code> rules follows the &ldquo;last match wins&rdquo; paradigm, that is why the block rule
+is so high up in the rules. Since I now have a &ldquo;default block&rdquo; rule, I removed
+the X11 rule for ports 6000-6010 as it is not needed.</p>
+<p>Now to allow IPv6, I&rsquo;ve come up with these rules:</p>
+<pre tabindex="0"><code>pass in quick inet6 proto icmp6 from fe80::/64 to ff02::1:ff00:0/104 icmp6-type 135 no state
+pass out quick inet6 proto icmp6 from fe80::/64 to ff02::1:ff00:0/104 icmp6-type 135 no state
+
+pass in quick inet6 proto icmp6 from fe80::/64 to fe80::/64 icmp6-type { 135 136 } no state
+pass out quick inet6 proto icmp6 to fe80::/64 icmp6-type { 135 136 } no state
+
+pass in quick inet6 proto icmp6 from 2001:db8:1001:2002::1 to 2001:db8:1001:2002::2 icmp6-type 135 no state
+pass out quick inet6 proto icmp6 from 2001:db8:1001:2002::2 to 2001:db8:1001:2002::1 icmp6-type 136 no state
+</code></pre><p>Type 135 is neighbor solicitation and type 136 is neighbor advertisement. This shows the brilliancy
+of the OpenBSD man pages, as those codes can easily be found with <code>man icmp6</code>.</p>
+<p>Capturing icmp6 traffic with tcpdump looks something like this:</p>
+<pre tabindex="0"><code>fe80::my:mac &gt; ff02::1:ff00:1: icmp6: neighbor sol: who has 2001:db8:1001:2002::1
+fe80::router:mac &gt; fe80::my:mac: icmp6: neighbor adv: tgt is 2001:db8:1001:2002::1
+
+2001:db8:1001:2002::1 &gt; 2001:db8:1001:2002::2: icmp6: neighbor sol: who has 2001:db8:1001:2002::2
+2001:db8:1001:2002::2 &gt; 2001:db8:1001:2002::1: icmp6: neighbor adv: tgt is 2001:db8:1001:2002::2
+
+fe80::router:mac &gt; fe80::my:mac: icmp6: neighbor sol: who has fe80::my:mac
+fe80::my:mac &gt; fe80::router:mac: icmp6: neighbor adv: tgt is fe80::my:mac
+
+fe80::my:mac &gt; fe80::router:mac: icmp6: neighbor sol: who has fe80::router:mac
+fe80::router:mac &gt; fe80::my:mac: icmp6: neighbor adv: tgt is fe80::router:mac
+</code></pre><p>My understanding of IPv6 is quite limited so I can&rsquo;t really explain how this
+works. I have done some research and found that addresses beginning with fe80
+are &ldquo;link local&rdquo;, and thus aren&rsquo;t routed on the internet. I could probably be
+more relaxed with them but I like to close down the firewall as much as
+possible. For my VM, they seem to contain my MAC address which is something
+I&rsquo;m not sure I should give away, so that&rsquo;s why I&rsquo;ve removed it.</p>
+<p>The address beginning with ff02 is a &ldquo;solicited-node multicast address&rdquo;, and
+I&rsquo;m just going link to the Wikipedia article about it which is <a href="https://en.wikipedia.org/wiki/Solicited-node_multicast_address">here</a>.
+I guess it is sort of a broadcast address sent to everyone on the same link
+to discover who is there, and have them respond with their address.</p>
+<p>All of this is part of the <a href="https://en.wikipedia.org/wiki/Neighbor_Discovery_Protocol">neighbor discovery protocol</a>
+which I don&rsquo;t really understand, but is needed for IPv6 to work.</p>
+<p>The Wikipedia page on the protocol lists other types such as 133 and 134 for router
+solicitation and router advertisement, but I&rsquo;ve not seen that on the network
+and don&rsquo;t know why that is. Perhaps it&rsquo;s due to how the provider has configured
+their network, I don&rsquo;t know. In any case, that is why my rules only contain
+types 135 adn 136.</p>
+<p>The VM I&rsquo;m using uses DHCP to get its IPv4 address, but while the IPv6 address
+is assigned statically, it needs this discovery protocol to work. I learned that
+the hard way by blocking it and while it worked fine for a while, all of a sudden I couldn&rsquo;t reach
+the IPv6 address anymore, until I enabled this again.</p>
+<p>I could maybe use stateful rules (I removed that here by using &ldquo;no state&rdquo;) to limit
+the number of rules needed, but there was so much traffic and I didn&rsquo;t
+like seeing it in the state table as it made the other traffic hard to see.</p>
+<p>This is definately something I need to get back to. The firewall rules seems to be working for now,
+but I may have broken something I&rsquo;ll only find out about later down the line.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+    
+    
+      <a href="/posts/2025/20250424-openbsd-order/" class="button inline next">
+         [<span class="button__text">Ordering an OpenBSD VPS and initial thoughts</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

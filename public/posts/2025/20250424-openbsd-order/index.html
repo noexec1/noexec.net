@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Ordering an OpenBSD VPS and initial thoughts :: Terminal</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="First order of business, my thoughts on the ordering process for this new VPS and what I got." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="/posts/2025/20250424-openbsd-order/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="/css/code.min.4f0ccc8439f99bf7f7970298556b94011aabc1fcae743b6842fc3361a2da9ea3.css">
+
+  
+  <link rel="stylesheet" href="/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="/css/main.min.15870410d15d02abd22fb5ef00996f65a00d04b3a7435e9f83831c7c2298de88.css">
+
+  
+  <link rel="stylesheet" href="/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Ordering an OpenBSD VPS and initial thoughts">
+<meta property="og:description" content="First order of business, my thoughts on the ordering process for this new VPS and what I got." />
+<meta property="og:url" content="/posts/2025/20250424-openbsd-order/" />
+<meta property="og:site_name" content="Terminal" />
+
+  <meta property="og:image" content="/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2025-04-24 19:57:25 &#43;0200 CEST" />
+
+
+
+
+
+
+
+
+
+<link rel="preload" href="/fonts/FiraCode-Latin.woff2" as="font" type="font/woff2" crossorigin />
+
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    noexec.net
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about/">about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/">mastodon</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about/" >about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/" >mastodon</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="/posts/2025/20250424-openbsd-order/">Ordering an OpenBSD VPS and initial thoughts</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2025-04-24</time></div>
+
+  
+  
+
+
+  
+    <div class="table-of-contents">
+      <h2>
+        Table of Contents
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#ordering">Ordering</a></li>
+    <li><a href="#setup">Setup</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <h2 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>I thought I would start by sharing my experience of ordering and setting up an
+OpenBSD VPS on OpenBSD.Amsterdam. Before I begin, I have no affiliation with
+them so I gain nothing should you decide to order from them, and I am paying for
+this server out of my own pocket.</p>
+<h2 id="ordering">Ordering<a href="#ordering" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Looking around on their page, they have quite a lot of information about their
+setup, so it should be easy to see what the options are and what you are getting.</p>
+<p>I would like to point out a few things which I think is unique with this
+provider. First off, the hosts are also running OpenBSD, using <code>vmm/vmd</code> to
+provide virtualization. If you click on the &ldquo;xxx VMs deployed&rdquo; link in the top
+right-hand corner of their page, you will find rrdtool graphs for all the hosts
+which shows their uptime as well as what OpenBSD version they are running. They
+also share what kind of hardware the hosts are running on, and that they
+provision at most 40 VMs per host, so they are quite transparent with their
+setup.</p>
+<p>Another thing I think is unique is that they allow you to SSH into the host, to
+manage your VM with <code>vmctl</code> if you need to start or stop it, or access its console.</p>
+<p>They do not have any web-interfaces to manage your VM, so SSH is it. I think this
+is a far superior experience though, as many console web-interfaces I have tried have been very laggy,
+and more problematic, have had a different keyboard mapping than mine. Having
+special characters in my password, like <code>^</code>, <code>`</code>, <code>[</code>, <code>}</code> and <code>*</code> I have many
+times struggled to log on in a web-interface as I couldn&rsquo;t find what key
+combinations to use to get those characters.</p>
+<p>To order a VPS, there&rsquo;s a large, friendly &ldquo;Book your VM&rdquo; button on their front-page.
+Fill in your information, select your options and that is it. Memory and disk
+can be increased later, so I went for the minimal option which is the default
+1 GB RAM, 50 GB disk.</p>
+<p>I ordered my VM around 8 in the evening Amsterdam time, and received the welcome
+mail a little more than one hour later with the login details. Your experience
+may vary here as I saw someone mention they got theirs mere minutes after ordering.</p>
+<p>Do note that you will have to pay for the VM for a year in advance, so if you
+just want to try OpenBSD, this may not be for you. The current price is €69
+for a year, which works out to less than €6 per month, which I personally
+think is reasonable. Here that price equals one, maybe two cups of take-away coffee a month.</p>
+<p>For every new VM ordered they donate €10 to the OpenBSD Foundation, and
+for every renewal they donate €15, so by being a customer you are helping fund
+the people and the infrastructure behind OpenBSD, OpenSSH and so on. I&rsquo;ve not
+seen anyone else do anything like that.</p>
+<h2 id="setup">Setup<a href="#setup" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Back to the setup, having received the login details I was able to log in with
+my wanted username, on the ip-address they gave, using my SSH-key.</p>
+<p>As noted in the onboarding link provided in the email I received, I found
+the root password in the <code>~/.ssh/authorized_keys</code> file.</p>
+<p>I changed that right away and setup <code>doas</code>, which OpenBSD uses instead of <code>sudo</code>
+to execute commands as root.</p>
+<p>Setting up doas is easy as my user was already a member of the group
+<code>wheel</code>, and the default doas config allows users in this group to execute
+commands. Group membership can be checked with the <code>id</code> command.</p>
+<p>OpenBSD comes with a set of example configuration files in <code>/etc/examples</code> so
+all I needed to do was copy <code>doas.conf</code> to <code>/etc</code> and I was good to go. Setting
+a strong password for my account was also done at this point.</p>
+<p>Now I have a config that works, but to make life a little more tolerable I added
+a line to the doas config so I won&rsquo;t have to enter my password every time:</p>
+<pre tabindex="0"><code>permit persist &lt;username&gt;
+</code></pre><p>This means I only have to give doas my password every so often, which seems to be
+every 5 minutes or so.</p>
+<p>Looking in <code>/var/mail</code> I found a file with my username. This contained
+a log of the installation, so I could see exactly how it was done. I made a copy
+of this as I&rsquo;m sure I want to reinstall my VM later to add full disk encryption (FDE).
+Another nice surprise was that they ran <code>syspatch</code> as part of the
+installation, meaning the VM already had the latest security patches applied. I
+ordered my VM a little earlier this month, at which point 7.6 had been out for a
+while, so it was nice to see all published patches were already installed. Patch
+status can be checked by running <code>doas syspatch</code> which should return an empty output,
+indicating that there was nothing to do as the system is up to date.</p>
+<p>So then, what is running on our shiny, new OpenBSD VM? Not much it turns out
+which I think is sensible, as there is no need to find out what everything
+is and how to disable it to secure the system.</p>
+<p>The entire process list:</p>
+<pre tabindex="0"><code>user@obsd-web:~$ ps waux
+USER       PID %CPU %MEM   VSZ   RSS TT  STAT   STARTED       TIME COMMAND
+root         1  0.0  0.0   940   100 ??  I      14Apr25    0:00.02 /sbin/init
+root     27554  0.0  0.0  1096    24 ??  Ip     14Apr25    0:00.01 /sbin/slaacd
+_slaacd  48623  0.0  0.0  1096    24 ??  Ip     14Apr25    0:00.01 slaacd: engine (slaacd)
+_slaacd  95138  0.0  0.0  1112   252 ??  IpU    14Apr25    0:00.02 slaacd: frontend (slaacd)
+root     43737  0.0  0.0  1124    24 ??  IU     14Apr25    0:00.02 /sbin/dhcpleased
+_dhcp    22091  0.0  0.1  1128   844 ??  Ip     14Apr25    0:00.05 dhcpleased: engine (dhcpleased)
+_dhcp    12222  0.0  0.1  1140   908 ??  IpU    14Apr25    0:00.06 dhcpleased: frontend (dhcpleased)
+root     45070  0.0  0.0   828     8 ??  IpU    14Apr25    0:00.01 /sbin/resolvd
+root     43133  0.0  0.1  1028   788 ??  IpU    14Apr25    0:00.02 syslogd: [priv] (syslogd)
+_syslogd 45465  0.0  0.1  1536  1528 ??  Spc    14Apr25    0:02.51 /usr/sbin/syslogd
+root     53296  0.0  0.0   992     8 ??  IU     14Apr25    0:00.01 pflogd: [priv] (pflogd)
+_pflogd  92342  0.0  0.1  1044   644 ??  Ipc    14Apr25    0:00.97 pflogd: [running] -s 160 -i pflog0 -f /var/log/pflog (pflogd)
+_ntp      5555  0.0  0.2  1512  1844 ??  S&lt;pc   14Apr25    0:13.77 ntpd: ntp engine (ntpd)
+_ntp     36218  0.0  0.1  1336  1164 ??  Ip     14Apr25    0:00.14 ntpd: dns engine (ntpd)
+root      3044  0.0  0.2  1412  1856 ??  I&lt;pU   14Apr25    0:00.07 /usr/sbin/ntpd
+root     92087  0.0  0.2  1092  2460 ??  I      14Apr25    0:00.46 sshd: /usr/sbin/sshd [listener] 0 of 10-100 startups (sshd)
+root     98446  0.0  0.2  1980  1684 ??  Ip     14Apr25    0:00.03 /usr/sbin/smtpd
+_smtpd   46031  0.0  0.0  1708    24 ??  Ipc    14Apr25    0:00.01 smtpd: crypto (smtpd)
+_smtpd   29310  0.0  0.2  1984  1576 ??  Ipc    14Apr25    0:00.03 smtpd: control (smtpd)
+_smtpd   36714  0.0  0.2  1804  2020 ??  Ip     14Apr25    0:00.03 smtpd: lookup (smtpd)
+_smtpd    4182  0.0  0.2  2572  2548 ??  Ipc    14Apr25    0:00.07 smtpd: dispatcher (smtpd)
+_smtpq   65699  0.0  0.2  1924  1920 ??  Ipc    14Apr25    0:00.11 smtpd: queue (smtpd)
+_smtpd   14480  0.0  0.2  1708  1600 ??  Ipc    14Apr25    0:00.04 smtpd: scheduler (smtpd)
+root     50727  0.0  0.1  1152  1364 ??  Ip     14Apr25    0:03.56 /usr/sbin/cron
+root     79089  0.0  0.4  1588  4292 ??  I      11:14AM    0:00.05 sshd-session: user [priv] (sshd-session)
+user      5967  0.0  0.4  1860  3732 ??  R      11:14AM    0:00.11 sshd-session: user@ttyp0 (sshd-session)
+user     14194  0.0  0.1  1532  1144 p0  Sp     11:14AM    0:00.02 -ksh (ksh)
+user     85515  0.0  0.0   960   448 p0  R+pU   12:33PM    0:00.00 ps -waux
+root      7401  0.0  0.0   792    24 00  I+pU   14Apr25    0:00.02 /usr/libexec/getty std.115200 tty00
+user@obsd-web:~$
+</code></pre><p>As for what network services are running and having open ports, not many either.
+Only <code>sshd</code> and <code>dhcp</code> listens on the public ip, while <code>smtpd</code> listens on localhost only.
+I&rsquo;ve removed my incomming ssh connection, the outgoing ntp connections and my
+server ip:</p>
+<pre tabindex="0"><code>user@obsd-web:~$ netstat -an
+Active Internet connections (including servers)
+Proto   Recv-Q Send-Q  Local Address          Foreign Address        TCP-State
+tcp          0      0  *.22                   *.*                    LISTEN
+tcp          0      0  127.0.0.1.25           *.*                    LISTEN
+Active Internet connections (including servers)
+Proto   Recv-Q Send-Q  Local Address          Foreign Address
+udp          0      0  *.*                    *.*
+udp          0      0  x.x.x.x.68             *.*
+udp          0      0  *.*                    *.*
+Active Internet connections (including servers)
+Proto   Recv-Q Send-Q  Local Address          Foreign Address        TCP-State
+tcp6         0      0  fe80::1%lo0.25         *.*                    LISTEN
+tcp6         0      0  ::1.25                 *.*                    LISTEN
+tcp6         0      0  *.22                   *.*                    LISTEN
+Active Internet connections (including servers)
+Proto   Recv-Q Send-Q  Local Address          Foreign Address
+udp6         0      0  *.*                    *.*
+udp6         0      0  *.*                    *.*
+</code></pre><p>All in all it feels like a very nice and clean and minimal system, at least in
+the default setup. OpenBSD actually comes with a lot of services that can be
+activated if you want, which I&rsquo;ll get back to later.</p>
+<p>That&rsquo;s it for now. I&rsquo;m very happy with the process so far, the transparency of the
+hosting provider and the initial setup.</p>
+<p>Next up, change some things and add some services.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+      <a href="/posts/2025/20250425-openbsd-setup/" class="button inline prev">
+        &lt; [<span class="button__text">Initial OpenBSD setup and configuration</span>]
+      </a>
+    
+    
+      ::
+    
+    
+      <a href="/posts/2025/20250422-welcome/" class="button inline next">
+         [<span class="button__text">Welcome</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

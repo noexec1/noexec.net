@@ -6,8 +6,22 @@
     <description>Recent content on Terminal</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 22 Apr 2025 17:27:21 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 25 Apr 2025 19:10:56 +0200</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Initial OpenBSD setup and configuration</title>
+      <link>/posts/2025/20250425-openbsd-setup/</link>
+      <pubDate>Fri, 25 Apr 2025 19:10:56 +0200</pubDate>
+      <guid>/posts/2025/20250425-openbsd-setup/</guid>
+      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;Having just ordered an OpenBSD VPS which is now online and exposed to the world,&#xA;I want to  lock it down a little by changing the SSH config as well as the firewall&#xA;rules.&lt;/p&gt;&#xA;&lt;h2 id=&#34;ssh&#34;&gt;SSH&lt;/h2&gt;&#xA;&lt;p&gt;I like to start by disabling direct root-login, as well as disabling password&#xA;logins. The reason being that there are bots constantly scanning every IPv4&#xA;address on the internet, looking for known vulnerabilities I guess, as well as&#xA;some bots trying to log in through SSH. By disabling password-logins&#xA;you efficiently stop their brute-force attempts on passwords, and if you have &lt;code&gt;doas&lt;/code&gt;&#xA;set up like you should, there is no reason to log in directly as root either.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Ordering an OpenBSD VPS and initial thoughts</title>
+      <link>/posts/2025/20250424-openbsd-order/</link>
+      <pubDate>Thu, 24 Apr 2025 19:57:25 +0200</pubDate>
+      <guid>/posts/2025/20250424-openbsd-order/</guid>
+      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;I thought I would start by sharing my experience of ordering and setting up an&#xA;OpenBSD VPS on OpenBSD.Amsterdam. Before I begin, I have no affiliation with&#xA;them so I gain nothing should you decide to order from them, and I am paying for&#xA;this server out of my own pocket.&lt;/p&gt;&#xA;&lt;h2 id=&#34;ordering&#34;&gt;Ordering&lt;/h2&gt;&#xA;&lt;p&gt;Looking around on their page, they have quite a lot of information about their&#xA;setup, so it should be easy to see what the options are and what you are getting.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Welcome</title>
       <link>/posts/2025/20250422-welcome/</link>
