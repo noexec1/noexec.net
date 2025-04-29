@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Terminal</title>
+    <title>noexec.net</title>
     <link>/</link>
-    <description>Recent content on Terminal</description>
+    <description>Recent content on noexec.net</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 25 Apr 2025 19:10:56 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 29 Apr 2025 22:06:19 +0200</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OpenBSD 7.7 released</title>
+      <link>/posts/2025/20250429-openbsd-7.7/</link>
+      <pubDate>Tue, 29 Apr 2025 22:06:19 +0200</pubDate>
+      <guid>/posts/2025/20250429-openbsd-7.7/</guid>
+      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;Exciting times! OpenBSD 7.7 has been released, time to upgrade.&lt;/p&gt;&#xA;&lt;p&gt;It was actually released a couple of days ago, but to be honest&#xA;I felt the process was a little scary. Not to spoil anything but&#xA;it was quite uneventful. I also wanted to wait a little to see&#xA;some other reports on the upgrade process, and they seemed to be&#xA;all positive.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-upgrade&#34;&gt;The upgrade&lt;/h2&gt;&#xA;&lt;p&gt;I made sure everything was up to date first by running &lt;code&gt;syspatch&lt;/code&gt;&#xA;and &lt;code&gt;pkg_add -Uu&lt;/code&gt;, and then finally the big &lt;code&gt;sysupgrade&lt;/code&gt;.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Initial OpenBSD setup and configuration</title>
       <link>/posts/2025/20250425-openbsd-setup/</link>
       <pubDate>Fri, 25 Apr 2025 19:10:56 +0200</pubDate>
       <guid>/posts/2025/20250425-openbsd-setup/</guid>
-      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;Having just ordered an OpenBSD VPS which is now online and exposed to the world,&#xA;I want to  lock it down a little by changing the SSH config as well as the firewall&#xA;rules.&lt;/p&gt;&#xA;&lt;h2 id=&#34;ssh&#34;&gt;SSH&lt;/h2&gt;&#xA;&lt;p&gt;I like to start by disabling direct root-login, as well as disabling password&#xA;logins. The reason being that there are bots constantly scanning every IPv4&#xA;address on the internet, looking for known vulnerabilities I guess, as well as&#xA;some bots trying to log in through SSH. By disabling password-logins&#xA;you efficiently stop their brute-force attempts on passwords, and if you have &lt;code&gt;doas&lt;/code&gt;&#xA;set up like you should, there is no reason to log in directly as root either.&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;Having just ordered an OpenBSD VPS which is now online and exposed to the world,&#xA;I want to lock it down a little by changing the SSH config as well as the firewall&#xA;rules.&lt;/p&gt;&#xA;&lt;h2 id=&#34;ssh&#34;&gt;SSH&lt;/h2&gt;&#xA;&lt;p&gt;I like to start by disabling direct root-login, as well as disabling password&#xA;logins. The reason being that there are bots constantly scanning every IPv4&#xA;address on the internet, looking for known vulnerabilities I guess, as well as&#xA;some bots trying to log in through SSH. By disabling password-logins&#xA;you efficiently stop their brute-force attempts on passwords, and if you have &lt;code&gt;doas&lt;/code&gt;&#xA;set up like you should, there is no reason to log in directly as root either.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Ordering an OpenBSD VPS and initial thoughts</title>

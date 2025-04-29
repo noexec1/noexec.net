@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   
-    <title>Initial OpenBSD setup and configuration :: Terminal</title>
+    <title>Initial OpenBSD setup and configuration :: noexec.net</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Having just ordered an OpenBSD VPS which is now online and exposed to the world, let&#39;s lock it down a little by changing the SSH config as well as the firewall rules." />
+<meta name="description" content="Having just ordered an OpenBSD VPS which is now online and exposed to the world, I want to lock it down a little by changing the SSH config as well as the firewall rules." />
 <meta name="keywords" content="" />
 
   <meta name="robots" content="noodp" />
@@ -78,9 +78,9 @@
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Initial OpenBSD setup and configuration">
-<meta property="og:description" content="Having just ordered an OpenBSD VPS which is now online and exposed to the world, let&#39;s lock it down a little by changing the SSH config as well as the firewall rules." />
+<meta property="og:description" content="Having just ordered an OpenBSD VPS which is now online and exposed to the world, I want to lock it down a little by changing the SSH config as well as the firewall rules." />
 <meta property="og:url" content="/posts/2025/20250425-openbsd-setup/" />
-<meta property="og:site_name" content="Terminal" />
+<meta property="og:site_name" content="noexec.net" />
 
   <meta property="og:image" content="/og-image.png">
 
@@ -178,7 +178,7 @@
   <div class="post-content"><div>
         <h2 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">#</a> </h2>
 <p>Having just ordered an OpenBSD VPS which is now online and exposed to the world,
-I want to  lock it down a little by changing the SSH config as well as the firewall
+I want to lock it down a little by changing the SSH config as well as the firewall
 rules.</p>
 <h2 id="ssh">SSH<a href="#ssh" class="hanchor" ariaLabel="Anchor">#</a> </h2>
 <p>I like to start by disabling direct root-login, as well as disabling password
@@ -192,13 +192,14 @@ inadvertently lock yourself out, or be prepared to log in on the console to fix
 your mistake. It&rsquo;s probably a good idea to try the console login before making
 changes like this to make sure you can recover if something goes bad.</p>
 <p>I edit <code>/etc/ssh/sshd_config</code> with <code>vi</code> using doas, and find the <code>PermitRootLogin</code>
-line. As this is written after the fact, I don&rsquo;t remember exactly what I did,
-but the end result is that the line should be uncommented and contain the value <code>no</code>
-like this:</p>
+line. As this is written after the fact, I don&rsquo;t remember exactly what was necessary
+to do, but the end result is that the line should be uncommented and contain the
+value <code>no</code> like this:</p>
 <pre tabindex="0"><code>PermitRootLogin no
-</code></pre><p>Then I found the <code>PasswordAuthentication</code> line, uncommented it and again made sure the value was <code>no</code>.</p>
+</code></pre><p>Then I found the <code>PasswordAuthentication</code> line, uncommented it and again made sure the value was <code>no</code>,
+and finally did the same for the <code>KbdInteractiveAuthentication</code> line.</p>
 <p>I saved the file and restarted sshd to make the changes take effect: <code>doas rcctl restart sshd</code></p>
-<p>Here the fun begins. If I have made any mistakes I could easily lock myself out of the server.
+<p>Here the fun begins. If I have made any mistakes I could lock myself out of the server.
 Fortunately the connection was kept, so I let that window be, and in another window tried to
 log in with SSH again. It worked! If not I could have used the previous window and connection
 to fix my mistake, but that was not necessary this time.</p>
@@ -218,8 +219,8 @@ block return in on ! lo0 proto tcp to port 6000:6010
 # Port build user does not need network
 block return out log proto {tcp udp} user _pbuild
 </code></pre><p>The reason I&rsquo;m putting this second is because OpenBSD doesn&rsquo;t run many network
-services by default, so there aren&rsquo;t many ports open to the internet. Only
-two, actually. The first is SSH, tcp port 22, and the second is DHCP, udp port 68.</p>
+services by default, so there aren&rsquo;t many ports open to the internet. On this
+VM it&rsquo;s only two, SSH and DHCP.</p>
 <p>I have a somewhat static ip-address which I have for months at a time, so I&rsquo;ve
 set up SSH to only be available from my address. DHCP only needs outgoing
 traffic to the best of my knowledge so I only allow that.</p>
@@ -246,12 +247,12 @@ pass out proto udp from any port 68 to any port 67
 block return out log proto {tcp udp} user _pbuild
 </code></pre><p>A word of warning, this will break IPv6 should you be using that! If you are using IPv6 to connect,
 your connection will freeze and then drop should you try to load these rules, so be warned. I&rsquo;ll
-get back to how to allow IPv6 below as it needs more explanation. This is also not my actual IP,
+allow IPv6 below as it needs more explanation. This is also not my actual IP,
 but one made available for documentation pruposes. It should not be routed on the internet.</p>
 <p><code>pf</code> rules follows the &ldquo;last match wins&rdquo; paradigm, that is why the block rule
 is so high up in the rules. Since I now have a &ldquo;default block&rdquo; rule, I removed
 the X11 rule for ports 6000-6010 as it is not needed.</p>
-<p>Now to allow IPv6, I&rsquo;ve come up with these rules:</p>
+<p>Now to have IPv6 connectivity working, I&rsquo;ve come up with these rules:</p>
 <pre tabindex="0"><code>pass in quick inet6 proto icmp6 from fe80::/64 to ff02::1:ff00:0/104 icmp6-type 135 no state
 pass out quick inet6 proto icmp6 from fe80::/64 to ff02::1:ff00:0/104 icmp6-type 135 no state
 
@@ -260,8 +261,13 @@ pass out quick inet6 proto icmp6 to fe80::/64 icmp6-type { 135 136 } no state
 
 pass in quick inet6 proto icmp6 from 2001:db8:1001:2002::1 to 2001:db8:1001:2002::2 icmp6-type 135 no state
 pass out quick inet6 proto icmp6 from 2001:db8:1001:2002::2 to 2001:db8:1001:2002::1 icmp6-type 136 no state
-</code></pre><p>Type 135 is neighbor solicitation and type 136 is neighbor advertisement. This shows the brilliancy
-of the OpenBSD man pages, as those codes can easily be found with <code>man icmp6</code>.</p>
+</code></pre><p>Type 135 is neighbor solicitation and type 136 is neighbor advertisement. These types are easily
+found with <code>man icmp6</code>, but it just struck me, why do I need to find and input them?
+Looking at the rules that are in effect shows &ldquo;neighbrsol&rdquo; and &ldquo;neighbradv&rdquo; instead
+of 135 or 136. I did a quick check and learned I can indeed use the words instead of
+the type id, so I&rsquo;ll be changing my rules to use that instead from now on.</p>
+<p>For some reason <code>pf</code> and <code>tcpdump</code> seems to use different abbreviations, so I can&rsquo;t
+simply copy to text from tcpdump unfortunately.</p>
 <p>Capturing icmp6 traffic with tcpdump looks something like this:</p>
 <pre tabindex="0"><code>fe80::my:mac &gt; ff02::1:ff00:1: icmp6: neighbor sol: who has 2001:db8:1001:2002::1
 fe80::router:mac &gt; fe80::my:mac: icmp6: neighbor adv: tgt is 2001:db8:1001:2002::1
@@ -290,7 +296,7 @@ which I don&rsquo;t really understand, but is needed for IPv6 to work.</p>
 solicitation and router advertisement, but I&rsquo;ve not seen that on the network
 and don&rsquo;t know why that is. Perhaps it&rsquo;s due to how the provider has configured
 their network, I don&rsquo;t know. In any case, that is why my rules only contain
-types 135 adn 136.</p>
+types 135 and 136.</p>
 <p>The VM I&rsquo;m using uses DHCP to get its IPv4 address, but while the IPv6 address
 is assigned statically, it needs this discovery protocol to work. I learned that
 the hard way by blocking it and while it worked fine for a while, all of a sudden I couldn&rsquo;t reach
@@ -300,6 +306,29 @@ the number of rules needed, but there was so much traffic and I didn&rsquo;t
 like seeing it in the state table as it made the other traffic hard to see.</p>
 <p>This is definately something I need to get back to. The firewall rules seems to be working for now,
 but I may have broken something I&rsquo;ll only find out about later down the line.</p>
+<p>Edit 2025-04-28: Yes I had, by only allowing neighbor sol incoming from default gateway,
+I had blocked neighbor adv which means my VM didn&rsquo;t get those responses when it asked
+with &ldquo;neighbor sol&rdquo;. I discovered that as I saw my host sending multiple &ldquo;neighbor sol who has&rdquo; and
+the router seemingly responding fine. If my VM had received the answer properly instead
+of it being dropped by the firewall, it should have only asked once.</p>
+<pre tabindex="0"><code>2001:db8:1001:2002::2 &gt; 2001:db8:1001:2002::1: icmp6: neighbor sol: who has 2001:db8:1001:2002::1
+2001:db8:1001:2002::1 &gt; 2001:db8:1001:2002::2: icmp6: neighbor adv: tgt is 2001:db8:1001:2002::1
+
+2001:db8:1001:2002::2 &gt; 2001:db8:1001:2002::1: icmp6: neighbor sol: who has 2001:db8:1001:2002::1
+2001:db8:1001:2002::1 &gt; 2001:db8:1001:2002::2: icmp6: neighbor adv: tgt is 2001:db8:1001:2002::1
+
+2001:db8:1001:2002::2 &gt; 2001:db8:1001:2002::1: icmp6: neighbor sol: who has 2001:db8:1001:2002::1
+2001:db8:1001:2002::1 &gt; 2001:db8:1001:2002::2: icmp6: neighbor adv: tgt is 2001:db8:1001:2002::1
+</code></pre><p>The fix was to add neighbradv to these rules:</p>
+<pre tabindex="0"><code>pass in quick inet6 proto icmp6 from 2001:db8:1001:2002::1 to 2001:db8:1001:2002::2 icmp6-type { neighbrsol neighbradv } no state
+pass out quick inet6 proto icmp6 from 2001:db8:1001:2002::2 to 2001:db8:1001:2002::1 icmp6-type { neighbrsol neighbradv } no state
+</code></pre><p>I already have a rule that allows all outgoing traffic, but I like having
+explicit rules for this as well, in case I should change the &ldquo;allow all out&rdquo;
+rule later.</p>
+<p>Now to verify that the syntax of the rules are ok with <code>pfctl -nf /etc/pf.conf</code>,
+and if so, cross fingers, hope for the best and load them with <code>pfctl -f /etc/pf.conf</code>.</p>
+<p>Phew, it worked. I wasn&rsquo;t really concerned though, as long as my IP is the one
+being allowed to connect to SSH I should always be able to get back in.</p>
 
       </div></div>
 
@@ -312,6 +341,12 @@ but I may have broken something I&rsquo;ll only find out about later down the li
   </div>
   <div class="pagination__buttons">
     
+      <a href="/posts/2025/20250429-openbsd-7.7/" class="button inline prev">
+        &lt; [<span class="button__text">OpenBSD 7.7 released</span>]
+      </a>
+    
+    
+      ::
     
     
       <a href="/posts/2025/20250424-openbsd-order/" class="button inline next">

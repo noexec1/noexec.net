@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>OpenBSD 7.7 released :: noexec.net</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Exciting times! OpenBSD 7.7 has been released, time to upgrade." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="/posts/2025/20250429-openbsd-7.7/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="/css/code.min.4f0ccc8439f99bf7f7970298556b94011aabc1fcae743b6842fc3361a2da9ea3.css">
+
+  
+  <link rel="stylesheet" href="/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="/css/main.min.15870410d15d02abd22fb5ef00996f65a00d04b3a7435e9f83831c7c2298de88.css">
+
+  
+  <link rel="stylesheet" href="/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="OpenBSD 7.7 released">
+<meta property="og:description" content="Exciting times! OpenBSD 7.7 has been released, time to upgrade." />
+<meta property="og:url" content="/posts/2025/20250429-openbsd-7.7/" />
+<meta property="og:site_name" content="noexec.net" />
+
+  <meta property="og:image" content="/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2025-04-29 22:06:19 &#43;0200 CEST" />
+
+
+
+
+
+
+
+
+
+<link rel="preload" href="/fonts/FiraCode-Latin.woff2" as="font" type="font/woff2" crossorigin />
+
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    noexec.net
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about/">about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/">mastodon</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about/" >about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/" >mastodon</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="/posts/2025/20250429-openbsd-7.7/">OpenBSD 7.7 released</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2025-04-29</time></div>
+
+  
+  
+
+
+  
+    <div class="table-of-contents">
+      <h2>
+        Table of Contents
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#the-upgrade">The upgrade</a></li>
+    <li><a href="#so-then-whats-new">So then, what&rsquo;s new?</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <h2 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Exciting times! OpenBSD 7.7 has been released, time to upgrade.</p>
+<p>It was actually released a couple of days ago, but to be honest
+I felt the process was a little scary. Not to spoil anything but
+it was quite uneventful. I also wanted to wait a little to see
+some other reports on the upgrade process, and they seemed to be
+all positive.</p>
+<h2 id="the-upgrade">The upgrade<a href="#the-upgrade" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>I made sure everything was up to date first by running <code>syspatch</code>
+and <code>pkg_add -Uu</code>, and then finally the big <code>sysupgrade</code>.</p>
+<p>I don&rsquo;t know if I was unlucky with the mirror I hit, or if there
+simply was a lot of traffic when I tried, but the download process
+took some time. Downloading <code>base77.tgz</code> which is only 483 MB
+took over 5 minutes.</p>
+<pre tabindex="0"><code>Fetching from https://cdn.openbsd.org/pub/OpenBSD/7.7/amd64/
+SHA256.sig   100% |*************************************|  2324       00:00
+Signature Verified
+BUILDINFO    100% |*************************************|    54       00:00
+Verifying old sets.
+INSTALL.amd64 100% |************************************| 44889       00:00
+base77.tgz   100% |*************************************|   483 MB    05:26
+bsd          100% |*************************************| 31152 KB    00:16
+bsd.mp       100% |*************************************| 31257 KB    00:08
+bsd.rd       100% |*************************************|  4687 KB    00:04
+comp77.tgz   100% |*************************************| 81731 KB    00:22
+game77.tgz   100% |*************************************|  2746 KB    00:00
+man77.tgz    100% |*************************************|  8265 KB    00:05
+xbase77.tgz  100% |*************************************| 60706 KB    00:11
+xfont77.tgz  100% |*************************************| 23021 KB    00:09
+xserv77.tgz  100% |*************************************| 20074 KB    00:07
+xshare77.tgz 100% |*************************************|  4554 KB    00:04
+Verifying sets.
+Fetching updated firmware.
+fw_update: add none; update none; keep intel
+Upgrading.
+</code></pre><p>I hurried to log on to the console to watch the process. After the reboot
+it detected that it should do an update, and continued to boot from a
+ramdisk.</p>
+<pre tabindex="0"><code>Using drive 0, partition 3.
+Loading......
+probing: pc0 com0 mem[638K 1022M a20=on]
+disk: hd0+
+&gt;&gt; OpenBSD/amd64 BOOT 3.67
+upgrade detected: switching to /bsd.upgrade
+(...)
+OpenBSD 7.7 (RAMDISK_CD) #613: Sun Apr 13 08:35:08 MDT 2025
+    deraadt@amd64.openbsd.org:/usr/src/sys/arch/amd64/compile/RAMDISK_CD
+real mem = 1056952320 (1007MB)
+avail mem = 1018798080 (971MB)
+random: good seed from bootblocks
+mainbus0 at root
+</code></pre><p>There was a capitalized text about something to do with the date,
+I guess I should look into that. Nevertheless, it continued the
+update, answering the questions with some script I guess</p>
+<pre tabindex="0"><code>root on rd0a swap on rd0b dump on rd0b
+WARNING: CHECK AND RESET THE DATE!
+erase ^?, werase ^W, kill ^U, intr ^C, status ^T
+
+Welcome to the OpenBSD/amd64 7.7 installation program.
+Performing non-interactive upgrade...
+Terminal type? [vt220] vt220
+Available disks are: sd0.
+Which disk is the root disk? (&#39;?&#39; for details) [sd0] sd0
+Checking root filesystem (fsck -fp /dev/sd0a)... OK.
+Mounting root filesystem (mount -o ro /dev/sd0a /mnt)... OK.
+Force checking of clean non-root filesystems? [no] no
+</code></pre><p>Then it installed all the sets, relinked the kernel, which took
+quite some time and showed the &ldquo;congratulations&rdquo; message before
+rebooting again.</p>
+<pre tabindex="0"><code>Installing bsd          100% |**************************| 31152 KB    00:01
+Installing bsd.rd       100% |**************************|  4687 KB    00:00
+Installing base77.tgz   100% |**************************|   483 MB    01:05
+Installing comp77.tgz   100% |**************************| 81731 KB    00:29
+Installing man77.tgz    100% |**************************|  8265 KB    00:08
+Installing game77.tgz   100% |**************************|  2746 KB    00:00
+Installing xbase77.tgz  100% |**************************| 60706 KB    00:10
+Installing xshare77.tgz 100% |**************************|  4554 KB    00:08
+Installing xfont77.tgz  100% |**************************| 23021 KB    00:04
+Installing xserv77.tgz  100% |**************************| 20074 KB    00:03
+Installing BUILDINFO    100% |**************************|    54       00:00
+Location of sets? (disk http nfs or &#39;done&#39;) [done] done
+Making all device nodes... done.
+fw_update: add none; update none; keep intel
+Relinking to create unique kernel... done.
+
+CONGRATULATIONS! Your OpenBSD upgrade has been successfully completed!
+
+syncing disks... done
+vmmci0: powerdown
+rebooting...
+</code></pre><p>During this second boot it ran <code>sysmerge</code> which failed at <code>sshd_config</code>
+probably because of the changes I had made, and then instructed me to run
+it again. It also did a check for any new patches available, and output
+was empty as there was none.</p>
+<pre tabindex="0"><code>running rc.sysmerge
+===&gt; Updating /etc/changelist
+===&gt; Updating /etc/login.conf
+===&gt; Updating /etc/ssl/cert.pem
+---- /etc/ssh/sshd_config unhandled, re-run sysmerge to merge the new version
+starting network daemons: sshd smtpd.
+running rc.firsttime
+fw_update: add none; update none; keep intel
+Checking for available binary patches...
+</code></pre><p>After this I was greeted with the login prompt and could log in again. All
+in all I think it took around 15 minutes from I ran sysupgrade until it was finished.</p>
+<p>Following the instructions I ran syspatch again, even though that probably
+wasn&rsquo;t necessary because it looks like the installer did that on its own,
+but got an error:</p>
+<pre tabindex="0"><code>syspatch: cannot apply patches while reorder_kernel is running
+</code></pre><p>I&rsquo;m not sure what that is compared to the relinking that was done before
+the reboot, but not worries. I waited a little more, tried again, and no
+patches found as expected.</p>
+<p>Then it was time to upgrade the packages: <code>doas pkg_add -Uu</code> which also
+went without a hitch.</p>
+<p>Then finally to finish by running sysmerge: <code>doas sysmerge -d</code></p>
+<p>It was fortunately easy to answer these questions, as there weren&rsquo;t major
+changes in the new files, so I could keep my edits.</p>
+<h2 id="so-then-whats-new">So then, what&rsquo;s new?<a href="#so-then-whats-new" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>That is a little hard for me to explain. There&rsquo;s the <a href="https://www.openbsd.org/77.html">release notes</a> with
+changes compared to 7.6, but what it actually means in practice for me I don&rsquo;t know.</p>
+<p>Undeadly.org which calls itself &ldquo;OpenBSD journal&rdquo; is the one to follow for changes
+regarding OpenBSD, and they have <a href="https://undeadly.org/cgi?action=article;sid=20250427183032">this</a>
+information about the release.</p>
+<p>In general there seems to be lots of improvements here and there, driver improvements,
+security fixes and so on, which is nice. Will I notice a big difference running this
+web-server going from 7.6 to 7.7? Probably not. And I guess that is a good thing. It
+worked before, and it continues working now, albeit with general improvements.</p>
+<p>The big thing I feel I can wrap my head around is the release of OpenSSH 10 which
+we now get in OpenBSD 7.7. In OpenSSH 9.9 the Kyber algorithm (also known as ML-KEM)
+was introduced, and now in OpenSSH 10 it&rsquo;s been promoted to the preferred key exchange
+algorithm. I obviously don&rsquo;t really understand any this, but it&rsquo;s said to be quantum computer
+resistant or even secure against quantum computer attacks, which should be a good thing.</p>
+<p>Another thing with the OpenSSH update is that they have split some of the binaries into
+smaller pieces. With this release, <code>sshd-auth</code> was introduced, and the purpose of it is:</p>
+<pre tabindex="0"><code>Splitting this code into a separate binary ensures that the crucial
+pre-authentication attack surface has an entirely disjoint address
+space from the code used for the rest of the connection. It also
+yields a small runtime memory saving as the authentication code will
+be unloaded after thhe authentication phase completes.
+</code></pre><p>Reducing the attack surface of a network service pre-authentication sounds
+like a good thing in my mind.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+    
+    
+      <a href="/posts/2025/20250425-openbsd-setup/" class="button inline next">
+         [<span class="button__text">Initial OpenBSD setup and configuration</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

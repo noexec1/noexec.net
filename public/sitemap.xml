@@ -3,12 +3,15 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/</loc>
-    <lastmod>2025-04-25T19:10:56+02:00</lastmod>
+    <lastmod>2025-04-29T22:06:19+02:00</lastmod>
   </url><url>
-    <loc>/posts/2025/20250425-openbsd-setup/</loc>
-    <lastmod>2025-04-25T19:10:56+02:00</lastmod>
+    <loc>/posts/2025/20250429-openbsd-7.7/</loc>
+    <lastmod>2025-04-29T22:06:19+02:00</lastmod>
   </url><url>
     <loc>/posts/</loc>
+    <lastmod>2025-04-29T22:06:19+02:00</lastmod>
+  </url><url>
+    <loc>/posts/2025/20250425-openbsd-setup/</loc>
     <lastmod>2025-04-25T19:10:56+02:00</lastmod>
   </url><url>
     <loc>/posts/2025/20250424-openbsd-order/</loc>
