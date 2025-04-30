@@ -272,7 +272,7 @@ the X11 rule for ports 6000-6010 as it is not needed.</p>
 pass in proto tcp from 2001:db8:3003:4004::/64 to any port 22
 
 # Or, since IPv6 address space is so large it isn&#39;t being scanned:
-pass in proto tcp from any to 2001:db8:1001:2002::1 port 22
+pass in proto tcp from any to 2001:db8:1001:2002::2 port 22
 </code></pre><p>Now I have two rules to allow incoming tcp to port 22. There&rsquo;s a way to avoid
 that by using tables, but I&rsquo;ll get back to that later.</p>
 <p>Having the allow rule for IPv6 is a start, but to actually get IPv6 connectivity
