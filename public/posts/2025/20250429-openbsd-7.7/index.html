@@ -301,11 +301,11 @@ probably wasn&rsquo;t necessary because it looks like the installer did that on 
 but got an error:</p>
 <pre tabindex="0"><code>syspatch: cannot apply patches while reorder_kernel is running
 </code></pre><p>I&rsquo;m not sure what that is compared to the relinking that was done before
-the reboot, but not worries. I waited a little, tried again, and no
+the reboot, but no worries. I waited a little, tried again, and no
 patches found as expected.</p>
 <p>Then it was time to upgrade the packages: <code>doas pkg_add -Uu</code> which also
 went without a hitch.</p>
-<p>One thing to note here is that OpenBSD are quite conservative about updating
+<p>One thing to note here is that OpenBSD is quite conservative about updating
 packages. I follow the stable branch for OpenBSD itself, or so is my understanding
 of it, meaning I installed a release and will then only install security/errata
 patches as they become available with syspatch. The same pattern seems to be
@@ -314,8 +314,8 @@ if there aren&rsquo;t any critical issues with them, I&rsquo;ll still be running
 version until the OpenBSD 7.8 release in about 6 months.</p>
 <p>There is maybe a case for using services that are in the base system here,
 as they will automatically be upgraded when you upgrade the OS. They are
-perhapes also tested better together, to ensure they work well together.</p>
-<p>I&rsquo;ve not notived any issues yet though, with the few extra packages I had
+perhaps also tested better together, to ensure they work well together.</p>
+<p>I&rsquo;ve not noticed any issues yet though, with the few extra packages I had
 installed, it was just a thought, and I got ahead of myself. Let&rsquo;s continue.</p>
 <p>Then finally to finish by running sysmerge: <code>doas sysmerge -d</code></p>
 <p>This showed the diff first, then this:</p>
@@ -338,7 +338,7 @@ information about the release.</p>
 <p>In general there seems to be lots of improvements here and there, driver improvements,
 security fixes and so on, which is nice. Will I notice a big difference running this
 web-server going from 7.6 to 7.7? Probably not. And I guess that is a good thing. It
-worked before, and it continues working now, albeit with general improvements.</p>
+worked before, and it continues working now with general improvements.</p>
 <p>The big thing I feel I can wrap my head around is the release of OpenSSH 10 which
 we now get in OpenBSD 7.7. In OpenSSH 9.9 the Kyber algorithm (also known as ML-KEM)
 was introduced, and now in OpenSSH 10 it&rsquo;s been promoted to the preferred key exchange
