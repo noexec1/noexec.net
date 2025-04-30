@@ -174,6 +174,21 @@
 
 
   
+    <div class="table-of-contents">
+      <h2>
+        Table of Contents
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#ssh">SSH</a></li>
+    <li><a href="#firewall">Firewall</a></li>
+    <li><a href="#timezone">Timezone</a></li>
+    <li><a href="#prompt">Prompt</a></li>
+  </ul>
+</nav>
+    </div>
+  
 
   <div class="post-content"><div>
         <h2 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">#</a> </h2>
@@ -245,14 +260,23 @@ pass out proto udp from any port 68 to any port 67
 
 # Port build user does not need network
 block return out log proto {tcp udp} user _pbuild
-</code></pre><p>A word of warning, this will break IPv6 should you be using that! If you are using IPv6 to connect,
-your connection will freeze and then drop should you try to load these rules, so be warned. I&rsquo;ll
-allow IPv6 below as it needs more explanation. This is also not my actual IP,
-but one made available for documentation pruposes. It should not be routed on the internet.</p>
+</code></pre><p>These rules so far break IPv6 connectivity, but I will fix next. It took
+a bit of experimentation though, so I feel it requires some more documentation.</p>
+<p>The IP here is not my actual IP, but one made available for documentation pruposes.
+It should not be routed on the internet.</p>
 <p><code>pf</code> rules follows the &ldquo;last match wins&rdquo; paradigm, that is why the block rule
 is so high up in the rules. Since I now have a &ldquo;default block&rdquo; rule, I removed
 the X11 rule for ports 6000-6010 as it is not needed.</p>
-<p>Now to have IPv6 connectivity working, I&rsquo;ve come up with these rules:</p>
+<p>Now to allow incoming SSH connections using IPv6 I&rsquo;ll add a rule like this:</p>
+<pre tabindex="0"><code># If I have a /64 subnet on IPv6 which is like one IPv4 address:
+pass in proto tcp from 2001:db8:3003:4004::/64 to any port 22
+
+# Or, since IPv6 address space is so large it isn&#39;t being scanned:
+pass in proto tcp from any to 2001:db8:1001:2002::1 port 22
+</code></pre><p>Now I have two rules to allow incoming tcp to port 22. There&rsquo;s a way to avoid
+that by using tables, but I&rsquo;ll get back to that later.</p>
+<p>Having the allow rule for IPv6 is a start, but to actually get IPv6 connectivity
+working again, or to have it keep working, I&rsquo;ve come up with these rules:</p>
 <pre tabindex="0"><code>pass in quick inet6 proto icmp6 from fe80::/64 to ff02::1:ff00:0/104 icmp6-type 135 no state
 pass out quick inet6 proto icmp6 from fe80::/64 to ff02::1:ff00:0/104 icmp6-type 135 no state
 
@@ -261,11 +285,11 @@ pass out quick inet6 proto icmp6 to fe80::/64 icmp6-type { 135 136 } no state
 
 pass in quick inet6 proto icmp6 from 2001:db8:1001:2002::1 to 2001:db8:1001:2002::2 icmp6-type 135 no state
 pass out quick inet6 proto icmp6 from 2001:db8:1001:2002::2 to 2001:db8:1001:2002::1 icmp6-type 136 no state
-</code></pre><p>Type 135 is neighbor solicitation and type 136 is neighbor advertisement. These types are easily
+</code></pre><p>Icmp6-type 135 is neighbor solicitation and type 136 is neighbor advertisement. These types are easily
 found with <code>man icmp6</code>, but it just struck me, why do I need to find and input them?
-Looking at the rules that are in effect shows &ldquo;neighbrsol&rdquo; and &ldquo;neighbradv&rdquo; instead
+Looking at the rules that are in effect with <code>pfctl -sr</code> shows &ldquo;neighbrsol&rdquo; and &ldquo;neighbradv&rdquo; instead
 of 135 or 136. I did a quick check and learned I can indeed use the words instead of
-the type id, so I&rsquo;ll be changing my rules to use that instead from now on.</p>
+the type id, so I&rsquo;ll be changing my rules to use the words instead from now on.</p>
 <p>For some reason <code>pf</code> and <code>tcpdump</code> seems to use different abbreviations, so I can&rsquo;t
 simply copy to text from tcpdump unfortunately.</p>
 <p>Capturing icmp6 traffic with tcpdump looks something like this:</p>
@@ -299,8 +323,12 @@ their network, I don&rsquo;t know. In any case, that is why my rules only contai
 types 135 and 136.</p>
 <p>The VM I&rsquo;m using uses DHCP to get its IPv4 address, but while the IPv6 address
 is assigned statically, it needs this discovery protocol to work. I learned that
-the hard way by blocking it and while it worked fine for a while, all of a sudden I couldn&rsquo;t reach
-the IPv6 address anymore, until I enabled this again.</p>
+the hard way by blocking icmp6 completely and while it worked fine for a while,
+all of a sudden I couldn&rsquo;t reach the IPv6 address anymore, until I enabled this again.</p>
+<p>So to iterate, having a rule allowing incoming traffic to some TCP port is not
+enough for IPv6. When someone tries to connect, the router will broadcast messages
+asking who has the destination IP, and if that is not answered, it won&rsquo;t be
+possible to connect.</p>
 <p>I could maybe use stateful rules (I removed that here by using &ldquo;no state&rdquo;) to limit
 the number of rules needed, but there was so much traffic and I didn&rsquo;t
 like seeing it in the state table as it made the other traffic hard to see.</p>
@@ -308,9 +336,9 @@ like seeing it in the state table as it made the other traffic hard to see.</p>
 but I may have broken something I&rsquo;ll only find out about later down the line.</p>
 <p>Edit 2025-04-28: Yes I had, by only allowing neighbor sol incoming from default gateway,
 I had blocked neighbor adv which means my VM didn&rsquo;t get those responses when it asked
-with &ldquo;neighbor sol&rdquo;. I discovered that as I saw my host sending multiple &ldquo;neighbor sol who has&rdquo; and
+with &ldquo;neighbor sol&rdquo;. I discovered that as I saw my host sending multiple &ldquo;neighbor sol&rdquo; messages and
 the router seemingly responding fine. If my VM had received the answer properly instead
-of it being dropped by the firewall, it should have only asked once.</p>
+of it being dropped by the firewall, my VM should have only asked once.</p>
 <pre tabindex="0"><code>2001:db8:1001:2002::2 &gt; 2001:db8:1001:2002::1: icmp6: neighbor sol: who has 2001:db8:1001:2002::1
 2001:db8:1001:2002::1 &gt; 2001:db8:1001:2002::2: icmp6: neighbor adv: tgt is 2001:db8:1001:2002::1
 
@@ -319,7 +347,8 @@ of it being dropped by the firewall, it should have only asked once.</p>
 
 2001:db8:1001:2002::2 &gt; 2001:db8:1001:2002::1: icmp6: neighbor sol: who has 2001:db8:1001:2002::1
 2001:db8:1001:2002::1 &gt; 2001:db8:1001:2002::2: icmp6: neighbor adv: tgt is 2001:db8:1001:2002::1
-</code></pre><p>The fix was to add neighbradv to these rules:</p>
+</code></pre><p>The fix was to add neighbradv to these rules so I allow both neighbor sol and neighbor adv incoming
+and outgoing to and from the default gateway:</p>
 <pre tabindex="0"><code>pass in quick inet6 proto icmp6 from 2001:db8:1001:2002::1 to 2001:db8:1001:2002::2 icmp6-type { neighbrsol neighbradv } no state
 pass out quick inet6 proto icmp6 from 2001:db8:1001:2002::2 to 2001:db8:1001:2002::1 icmp6-type { neighbrsol neighbradv } no state
 </code></pre><p>I already have a rule that allows all outgoing traffic, but I like having
@@ -329,6 +358,22 @@ rule later.</p>
 and if so, cross fingers, hope for the best and load them with <code>pfctl -f /etc/pf.conf</code>.</p>
 <p>Phew, it worked. I wasn&rsquo;t really concerned though, as long as my IP is the one
 being allowed to connect to SSH I should always be able to get back in.</p>
+<h2 id="timezone">Timezone<a href="#timezone" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Server time was set to Europe/Amsterdam which isn&rsquo;t unnatural when you consider its
+location, but I prefer having time set to UTC to avoid the daylight savings mess.
+One reason: logs that will log the hour 2 in the morning twice when the clocks are
+turned back, or skip it when the clocks are turned forward.</p>
+<p>Current timezone can be found with <code>ls -l /etc/localtime</code>. Since it&rsquo;s a symlink it can
+be changed manually to any of the files in <code>/usr/share/zoneinfo</code> but I use zic:</p>
+<pre tabindex="0"><code>doas zic -l UTC
+</code></pre><h2 id="prompt">Prompt<a href="#prompt" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>I use the default shell in OpenBSD which is ksh. I don&rsquo;t like the default prompt
+though so I change it by setting PS1 like this in <code>~/.profile</code>:</p>
+<pre tabindex="0"><code>PS1=&#34;\t \u@\h:\w$ &#34;
+</code></pre><p>The result looks like this if I am in the docs directory in my home directory:</p>
+<pre tabindex="0"><code>20:34:12 user@obsd-web:~/docs$
+</code></pre><p>In other words: \t is current time, \u is current user, \h is the hostname
+and \w is current directory, shortened with ~ in front for anything in the home directory.</p>
 
       </div></div>
 

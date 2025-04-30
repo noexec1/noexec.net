@@ -279,9 +279,9 @@ CONGRATULATIONS! Your OpenBSD upgrade has been successfully completed!
 syncing disks... done
 vmmci0: powerdown
 rebooting...
-</code></pre><p>During this second boot it ran <code>sysmerge</code> which failed at <code>sshd_config</code>
+</code></pre><p>During this second boot it ran <code>sysmerge</code> which stopped at <code>sshd_config</code>
 probably because of the changes I had made, and then instructed me to run
-it again. It also did a check for any new patches available, and output
+it manually. It also did a check for any new patches available, and output
 was empty as there was none.</p>
 <pre tabindex="0"><code>running rc.sysmerge
 ===&gt; Updating /etc/changelist
@@ -294,18 +294,41 @@ fw_update: add none; update none; keep intel
 Checking for available binary patches...
 </code></pre><p>After this I was greeted with the login prompt and could log in again. All
 in all I think it took around 15 minutes from I ran sysupgrade until it was finished.</p>
-<p>Following the instructions I ran syspatch again, even though that probably
-wasn&rsquo;t necessary because it looks like the installer did that on its own,
+<p>After logging in I had a new mail notification. Looking at it, it was the
+installation log showing what had been done, similar to the initial installation.</p>
+<p>Continuing with the upgrade instructions I ran syspatch again, even though that
+probably wasn&rsquo;t necessary because it looks like the installer did that on its own,
 but got an error:</p>
 <pre tabindex="0"><code>syspatch: cannot apply patches while reorder_kernel is running
 </code></pre><p>I&rsquo;m not sure what that is compared to the relinking that was done before
-the reboot, but not worries. I waited a little more, tried again, and no
+the reboot, but not worries. I waited a little, tried again, and no
 patches found as expected.</p>
 <p>Then it was time to upgrade the packages: <code>doas pkg_add -Uu</code> which also
 went without a hitch.</p>
+<p>One thing to note here is that OpenBSD are quite conservative about updating
+packages. I follow the stable branch for OpenBSD itself, or so is my understanding
+of it, meaning I installed a release and will then only install security/errata
+patches as they become available with syspatch. The same pattern seems to be
+followed for packages. So the packages I upgraded to now right after release,
+if there aren&rsquo;t any critical issues with them, I&rsquo;ll still be running the same
+version until the OpenBSD 7.8 release in about 6 months.</p>
+<p>There is maybe a case for using services that are in the base system here,
+as they will automatically be upgraded when you upgrade the OS. They are
+perhapes also tested better together, to ensure they work well together.</p>
+<p>I&rsquo;ve not notived any issues yet though, with the few extra packages I had
+installed, it was just a thought, and I got ahead of myself. Let&rsquo;s continue.</p>
 <p>Then finally to finish by running sysmerge: <code>doas sysmerge -d</code></p>
-<p>It was fortunately easy to answer these questions, as there weren&rsquo;t major
-changes in the new files, so I could keep my edits.</p>
+<p>This showed the diff first, then this:</p>
+<pre tabindex="0"><code>  Use &#39;d&#39; to delete the temporary ./etc/pf.conf
+  Use &#39;i&#39; to install the temporary ./etc/pf.conf
+  Use &#39;m&#39; to merge the temporary and installed versions
+  Use &#39;v&#39; to view the diff results again
+
+  Default is to leave the temporary file to deal with by hand
+
+How should I deal with this? [Leave it for later]
+</code></pre><p>It was fortunately easy to answer these questions, as there weren&rsquo;t major
+changes in the new files, so I could delete the new temporary file and keep my edits.</p>
 <h2 id="so-then-whats-new">So then, what&rsquo;s new?<a href="#so-then-whats-new" class="hanchor" ariaLabel="Anchor">#</a> </h2>
 <p>That is a little hard for me to explain. There&rsquo;s the <a href="https://www.openbsd.org/77.html">release notes</a> with
 changes compared to 7.6, but what it actually means in practice for me I don&rsquo;t know.</p>
@@ -329,8 +352,9 @@ space from the code used for the rest of the connection. It also
 yields a small runtime memory saving as the authentication code will
 be unloaded after thhe authentication phase completes.
 </code></pre><p>Reducing the attack surface of a network service pre-authentication sounds
-like a good thing in my mind.</p>
-<p>In any case, goodbye</p>
+like a good thing to me.</p>
+<p>And as mentioned previously, new versions of packages which is nice.</p>
+<p>To conclude then, goodbye</p>
 <pre tabindex="0"><code>OpenBSD 7.6 (GENERIC) #1: Mon Feb 10 00:13:48 MST 2025
 </code></pre><p>and hello</p>
 <pre tabindex="0"><code>OpenBSD 7.7 (GENERIC) #619: Sun Apr 13 08:19:34 MDT 2025
