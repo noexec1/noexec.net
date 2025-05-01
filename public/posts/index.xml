@@ -6,8 +6,15 @@
     <description>Recent content in Posts on noexec.net</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 29 Apr 2025 22:06:19 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 01 May 2025 10:34:58 +0200</lastBuildDate>
     <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>An initial and basic set up of Wireguard on OpenBSD</title>
+      <link>/posts/2025/20250501-setup-wireguard-openbsd/</link>
+      <pubDate>Thu, 01 May 2025 10:34:58 +0200</pubDate>
+      <guid>/posts/2025/20250501-setup-wireguard-openbsd/</guid>
+      <description>&lt;p&gt;One great thing about OpenBSD is that it comes with many services included.&#xA;Wireguard is one of them, meaning it can be set up without installing anything.&lt;/p&gt;&#xA;&lt;p&gt;Here is my initial and quite basic setup of Wireguard on OpenBSD without using&#xA;anything other than what is included in the base system. I already feel I will&#xA;have to get back to this and improve the setup for maintainability, but for a&#xA;first setup it works and that is good enough right now.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>OpenBSD 7.7 released</title>
       <link>/posts/2025/20250429-openbsd-7.7/</link>
