@@ -262,7 +262,7 @@ pass out proto udp from any port 68 to any port 67
 block return out log proto {tcp udp} user _pbuild
 </code></pre><p>These rules so far break IPv6 connectivity, but I will fix next. It took
 a bit of experimentation though, so I feel it requires some more documentation.</p>
-<p>The IP here is not my actual IP, but one made available for documentation pruposes.
+<p>The IP here is not my actual IP, but one made available for documentation purposes.
 It should not be routed on the internet.</p>
 <p><code>pf</code> rules follows the &ldquo;last match wins&rdquo; paradigm, that is why the block rule
 is so high up in the rules. Since I now have a &ldquo;default block&rdquo; rule, I removed
