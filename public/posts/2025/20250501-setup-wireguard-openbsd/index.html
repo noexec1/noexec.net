@@ -227,7 +227,7 @@ PRESHARED=$(cat /etc/wireguard/${PEER}-${INTERFACE}.preshared)
 ifconfig ${INTERFACE} wgpeer ${PUBKEY} \
         wgdescr ${PEER} \
         wgpsk ${PRESHARED} \
-        wgendpoint &#34;peerIP peerPORT&#34;
+        wgendpoint peerIP peerPORT \
         wgaip &#34;10.0.0.10/32&#34; \
 </code></pre><p>This is very simple and probably a little naive. If I were to add another peer
 I would have to duplicate everything from PEER and down, which sounds like
