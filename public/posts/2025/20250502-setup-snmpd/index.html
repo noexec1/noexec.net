@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Setup SNMP for measuring CPU load and network traffic :: noexec.net</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="One great thing about OpenBSD is that it comes with many services included.
+SNMP is one of them, meaning it can be set up without installing
+anything.
+
+I am not sure how much value SNMP provides by itself, so I will be using it
+with RRDTool to capture, store and graph the measurements." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="/posts/2025/20250502-setup-snmpd/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="/css/code.min.4f0ccc8439f99bf7f7970298556b94011aabc1fcae743b6842fc3361a2da9ea3.css">
+
+  
+  <link rel="stylesheet" href="/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="/css/main.min.15870410d15d02abd22fb5ef00996f65a00d04b3a7435e9f83831c7c2298de88.css">
+
+  
+  <link rel="stylesheet" href="/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Setup SNMP for measuring CPU load and network traffic">
+<meta property="og:description" content="One great thing about OpenBSD is that it comes with many services included.
+SNMP is one of them, meaning it can be set up without installing
+anything.
+
+I am not sure how much value SNMP provides by itself, so I will be using it
+with RRDTool to capture, store and graph the measurements." />
+<meta property="og:url" content="/posts/2025/20250502-setup-snmpd/" />
+<meta property="og:site_name" content="noexec.net" />
+
+  <meta property="og:image" content="/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2025-05-02 18:08:55 &#43;0200 CEST" />
+
+
+
+
+
+
+
+
+
+<link rel="preload" href="/fonts/FiraCode-Latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="me" href="https://mastodon.bsd.cafe/@noexec">
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    noexec.net
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about/">about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/">mastodon</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about/" >about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/" >mastodon</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="/posts/2025/20250502-setup-snmpd/">Setup SNMP for measuring CPU load and network traffic</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2025-05-02</time></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>One great thing about OpenBSD is that it comes with many services included.
+SNMP is one of them, meaning it can be set up without installing anything.</p>
+<p>I am not sure how much value SNMP provides by itself, so I will be using it
+with RRDTool to capture, store and graph the measurements.</p>
+<p>The reason for doing this is to get some nice graphs that can give a quick
+overview of how the server is doing in terms of CPU load and network traffic.
+SNMP can measure more than this but I think it is enough to start with.</p>
+<p>I begin by copying the <code>snmpd.conf</code> file from <code>/etc/examples</code> to <code>/etc/</code>.
+As this file contains the password to access the service in cleartext it
+should be kept readable for root only.</p>
+<p>Next I add a &ldquo;listen&rdquo; line for localhost only and by not specifying anything
+more, it seems version 3 of the SNMP protocol is being used. Other examples
+are shown in the file.</p>
+<pre tabindex="0"><code>listen on 127.0.0.1                     # SNMPv3 on one specific address
+</code></pre><p>The next thing is to add a user and set the passwords:</p>
+<pre tabindex="0"><code>user &#34;user&#34; auth hmac-sha256 authkey &#34;Dash A pass&#34; enc aes enckey &#34;Dash X pass&#34;
+</code></pre><p>These are obviously not my passwords, I set them just to show that spaces can
+be used and clearly show what parameter they follow.</p>
+<p>Then enable the service so it starts automatically at boot, and start it now:</p>
+<pre tabindex="0"><code>doas rcctl enable snmpd
+doas rcctl start snmpd
+</code></pre><p>Now to make a query and check that it works. The command ends up being quite
+long unfortunately:</p>
+<pre tabindex="0"><code>snmp get -A &#34;Dash A pass&#34; -a SHA-256 -l authPriv -u user -X &#34;Dash X pass&#34; localhost sysDescr.0
+</code></pre><p>This gives me output similar to running <code>uname -a</code> which shows it worked as
+expected.</p>
+<p>To find all the things that can be queried, use <code>snmp walk</code> without the oid at the end. Oid
+is short for Object Identifier and is a unique value used to identify an object in the database.</p>
+<pre tabindex="0"><code>snmp walk -A &#34;Dash A pass&#34; -a SHA-256 -l authPriv -u user -X &#34;Dash X pass&#34; localhost
+</code></pre><p>The first word on each line is the oid that can be queried. Here I&rsquo;m showing most
+of the ones I will be using: Uptime, interface names, counted traffic in bytes incoming
+and outgoing as well as the processor load:</p>
+<pre tabindex="0"><code>hrSystemUptime.0 = Timeticks: (8372996) 23:15:29.96
+ifDescr.1 = STRING: vio0
+ifDescr.2 = STRING: enc0
+ifDescr.3 = STRING: lo0
+ifDescr.4 = STRING: wg0
+ifDescr.5 = STRING: pflog0
+ifInOctets.1 = Counter32: 778325427
+ifInOctets.2 = Counter32: 0
+ifInOctets.3 = Counter32: 165314
+ifInOctets.4 = Counter32: 18752512
+ifInOctets.5 = Counter32: 0
+ifOutOctets.1 = Counter32: 29768284
+ifOutOctets.2 = Counter32: 0
+ifOutOctets.3 = Counter32: 178199
+ifOutOctets.4 = Counter32: 10483350
+ifOutOctets.5 = Counter32: 0
+hrProcessorLoad.1 = INTEGER: 1
+</code></pre><p>To get counters for incoming traffic it is possible to get them one by
+one with get or all of them at once with walk. To get just one counter
+the full oid is needed, to get all of them at once, the . and the number
+behind must be dropped:</p>
+<pre tabindex="0"><code>17:17:20 user@obsd-web:~$ snmp get -A &#34;Dash A pass&#34; -a SHA-256 -l authPriv -u user -X &#34;Dash X pass&#34; localhost ifInOctets.1
+ifInOctets.1 = Counter32: 790324829
+17:17:29 user@obsd-web:~$ snmp walk -A &#34;Dash A pass&#34; -a SHA-256 -l authPriv -u user -X &#34;Dash X pass&#34; localhost ifInOctets
+ifInOctets.1 = Counter32: 790442290
+ifInOctets.2 = Counter32: 0
+ifInOctets.3 = Counter32: 1129722
+ifInOctets.4 = Counter32: 18856304
+ifInOctets.5 = Counter32: 0
+17:17:40 user@obsd-web:~$
+</code></pre><p>This has been easy so far and this is it for now. Next up is installing RRDTool,
+collecting some data and making some graphs.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+    
+    
+      <a href="/posts/2025/20250501-setup-wireguard-openbsd/" class="button inline next">
+         [<span class="button__text">An initial and basic set up of Wireguard on OpenBSD</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

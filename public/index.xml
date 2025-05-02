@@ -6,8 +6,15 @@
     <description>Recent content on noexec.net</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 01 May 2025 10:34:58 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 02 May 2025 18:08:55 +0200</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Setup SNMP for measuring CPU load and network traffic</title>
+      <link>/posts/2025/20250502-setup-snmpd/</link>
+      <pubDate>Fri, 02 May 2025 18:08:55 +0200</pubDate>
+      <guid>/posts/2025/20250502-setup-snmpd/</guid>
+      <description>&lt;p&gt;One great thing about OpenBSD is that it comes with many services included.&#xA;SNMP is one of them, meaning it can be set up without installing anything.&lt;/p&gt;&#xA;&lt;p&gt;I am not sure how much value SNMP provides by itself, so I will be using it&#xA;with RRDTool to capture, store and graph the measurements.&lt;/p&gt;&#xA;&lt;p&gt;The reason for doing this is to get some nice graphs that can give a quick&#xA;overview of how the server is doing in terms of CPU load and network traffic.&#xA;SNMP can measure more than this but I think it is enough to start with.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>An initial and basic set up of Wireguard on OpenBSD</title>
       <link>/posts/2025/20250501-setup-wireguard-openbsd/</link>
