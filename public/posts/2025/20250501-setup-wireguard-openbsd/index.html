@@ -289,7 +289,30 @@ round-trip min/avg/max/std-dev = 12.294/12.542/13.072/0.268 ms
                 wgaip 10.0.0.10/32
         groups: wg
         inet 10.0.0.1 netmask 0xffffff00 broadcast 10.0.0.255
-</code></pre>
+</code></pre><p>Addendum: Remember to update firewall rules!</p>
+<p>There is a new network service listening on udp port 51820 so we need to allow
+our peers to connect to it. Wireguard will silently drop any traffic not
+encrypted with our public and preshared key, so it will look as if the port is
+closed/filtered to any unauthorized client. It can therefore probably be left
+open for everyone. This increases the risk for an exploit though, if there is a
+weakness in the Wireguard implementation. However, one of the selling points of
+Wireguard is that it consists of not many lines of code (I seem to have read
+around 4000 somewhere?) which makes it easier to audit and secure than the likes
+of OpenVPN and IPSec.</p>
+<p>To open udp port 51820 for everyone, I added the following to my firewall rules:</p>
+<pre tabindex="0"><code>pass in proto udp from any to any port 51820
+</code></pre><p>Wireguard also adds a new interface, wg0, so traffic needs to be allowed on that.
+For the time being I allow all traffic on that interface:</p>
+<pre tabindex="0"><code>pass in on wg0 from any to any
+</code></pre><p>I like to be explicit in my rules. The same could be written just as</p>
+<pre tabindex="0"><code>pass in on wg0
+</code></pre><p>This will allow every client in my network to connect to every service on my
+server which is fine for now. Given you have to have my public key, a preshared
+key and be added to my configuration in order to connect I consider it a trusted
+network for now. I will revisit this later, as I have thoughts on letting peers
+reach each other through my server. That is currently not possible as I don&rsquo;t
+allow packet forwarding for instance, but I will get back to that.</p>
+
       </div></div>
 
   
