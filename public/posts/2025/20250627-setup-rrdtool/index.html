@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Setup RRDTool for CPU and network graphs :: noexec.net</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Having installed SNMP, it is time to measure something, store the measurements
+in a database and finally make some pretty graphs of it. The tool I&#39;m
+using for all of that is RRDtool." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="/posts/2025/20250627-setup-rrdtool/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="/css/code.min.4f0ccc8439f99bf7f7970298556b94011aabc1fcae743b6842fc3361a2da9ea3.css">
+
+  
+  <link rel="stylesheet" href="/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="/css/main.min.15870410d15d02abd22fb5ef00996f65a00d04b3a7435e9f83831c7c2298de88.css">
+
+  
+  <link rel="stylesheet" href="/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Setup RRDTool for CPU and network graphs">
+<meta property="og:description" content="Having installed SNMP, it is time to measure something, store the measurements
+in a database and finally make some pretty graphs of it. The tool I&#39;m
+using for all of that is RRDtool." />
+<meta property="og:url" content="/posts/2025/20250627-setup-rrdtool/" />
+<meta property="og:site_name" content="noexec.net" />
+
+  <meta property="og:image" content="/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2025-06-27 16:36:57 &#43;0200 CEST" />
+
+
+
+
+
+
+
+
+
+<link rel="preload" href="/fonts/FiraCode-Latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="me" href="https://mastodon.bsd.cafe/@noexec">
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    noexec.net
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about/">about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/">mastodon</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about/" >about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/" >mastodon</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="/posts/2025/20250627-setup-rrdtool/">Setup RRDTool for CPU and network graphs</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2025-06-27</time></div>
+
+  
+  
+
+
+  
+    <div class="table-of-contents">
+      <h2>
+        Table of Contents
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#creating-a-database">Creating a database</a>
+      <ul>
+        <li><a href="#rrd-for-cpu">RRD for CPU</a></li>
+        <li><a href="#rrd-for-interface-counters">RRD for interface counters</a></li>
+        <li><a href="#my-rrd-for-cpu">My RRD for CPU</a></li>
+        <li><a href="#my-rrd-for-interface-counters">My RRD for interface counters</a></li>
+      </ul>
+    </li>
+    <li><a href="#getting-the-data">Getting the data</a>
+      <ul>
+        <li><a href="#32-vs-64-bit-counters">32 vs 64-bit counters</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-scripts">The scripts</a></li>
+    <li><a href="#graphs">Graphs</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <h2 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Having installed SNMP, it is time to measure something, store the measurements
+in a database and finally make some pretty graphs of it all. The tool I&rsquo;m
+using for all of that is RRDtool.</p>
+<p>RRDtool, or &ldquo;round robin database tool&rdquo; as it stands for, is a database
+specifically for storing data in time series. The way I understand this
+is that the database is essentially a fixed-length list, and that when
+you add an item, an item will be removed so the list is always the same
+length. The time series part means that a key is time. You measure
+something at a given time, store it in the database at this point in time,
+and the oldest element will be removed.</p>
+<p>RRDtool also comes with a tool to make graphs of what was stored, so you
+can easily see the change over time.</p>
+<p>You can store whatever measurements you want in an RRDtool database as
+long as they are at somewhat regular intervals in time. I will be using
+SNMP to capture CPU load and interface counters (network traffic) every
+minute, store it and eventually make graphs of it.</p>
+<h2 id="installation">Installation<a href="#installation" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>RRDtool is fortunately available as a package for OpenBSD as can be found
+with <code>pkg_info -Q rrdtool</code>:</p>
+<pre tabindex="0"><code>collectd-rrdtool-5.12.0p3
+debug-rrdtool-1.9.0
+py3-rrdtool-0.1.16p3
+rrdtool-1.9.0
+</code></pre><p>The one we want is the last one and it can be easily installed with
+<code>pkg_add rrdtool-1.9.0</code></p>
+<h2 id="creating-a-database">Creating a database<a href="#creating-a-database" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>This part I have to admit I don&rsquo;t think I fully understand, even though
+I&rsquo;ve done a lot of searching, reading, experimenting and copy/pasting to
+get this working.</p>
+<h3 id="rrd-for-cpu">RRD for CPU<a href="#rrd-for-cpu" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>The people behind OpenBSD.Amsterdam have written a little about their
+configuration <a href="https://openbsd.amsterdam/blog/rrdtool-looks-nicer.html">here</a> and I have tried to replicate that
+for my server since I liked it. I will sort of dissect it here and go
+through it as I understand it and explain my changes.</p>
+<p>To start with, they create the database for CPU measurements like this:</p>
+<pre tabindex="0"><code>${RRDTOOL} create ${RRDFILES}/${HOST}-cpu.rrd \
+        --step 300 \
+        DS:ds0:GAUGE:600:U:U \
+        RRA:MAX:0.5:1:20000
+</code></pre><p>Since this is run from a script, <code>${RRDTOOL}</code> is path to the <code>rrdtool</code>
+command and <code>${RRDFILES}/${HOST}-cpu.rrd</code> is path to where the database
+should be stored, and they seem to have one file per host, each ending
+with <code>-cpu.rrd</code>.</p>
+<p>The next line, <code>--step 300</code> is how often in seconds measurements will
+be recorded, in other words, once every 5 minutes. I will measure every
+minute so my step will be 60.</p>
+<p>Next comes DS, or data source. This line contains a lot so I want to break
+it down further.</p>
+<p><code>DS:ds0:GAUGE:600:U:U</code></p>
+<p>The field <code>ds0</code> is the name of the data source, and it can be anything you
+want as long as it&rsquo;s 1-19 characters long and containing only letters,
+number or the underscore character. This will be referenced when creating
+graphs.</p>
+<p>The field <code>GAUGE</code> is the data source type. The documentation says this
+about this type:</p>
+<pre tabindex="0"><code>is for things like temperatures or number of people in a room or the value of a RedHat share.
+</code></pre><p>My interpretation of this is that it is for values that can seemingly
+change at will, without being affected by previous readings, and so
+will be stored as-is. Unfortunately that is not the whole picture as
+there is something called a &ldquo;consolidation function&rdquo;, or CF for short,
+that will be applied when we record data. I&rsquo;ll get back to that later.</p>
+<p>For storing interface counters, or network traffic, I will be using the
+COUNTER type, but more on that as I get to it.</p>
+<p>Next on the data source line is the value 600. This field is called heartbeat,
+and is the max number of seconds that may pass between two updates before
+the value is considered to be unknown. In other words, if 600 or more seconds
+have passed, twice the number of seconds of <code>step</code>, the value is recorded
+as unknown. What can also be understood by this is that values doesn&rsquo;t have
+to be recorded exactly at step boundaries, but there is some leverage as
+defined by heartbeat.</p>
+<p>The next two fields which are both <code>U</code> here define minimum and maximum value,
+if known. If we don&rsquo;t know what they can be, we can set the fields to U as
+is shown here. I&rsquo;m not sure what the max for CPU load can be, but I would
+expect the minimum to be 0.</p>
+<p>The next line defines the RRA, or round robin archive. This will contain
+the data from each of the defined data sources.</p>
+<p><code>RRA:MAX:0.5:1:20000</code></p>
+<p>The field MAX is the aggregation consolidation function being used. Other
+alternatives are AVERAGE, MIN and LAST. I don&rsquo;t really understand what
+these do. It seems to me that the value I store is stored as-is, no matter
+what aggregation function I use. It could be this comes into play if values
+aren&rsquo;t stored at their time interval, or if multiple values are stored in
+an interval, I don&rsquo;t know. I might look into that later.</p>
+<p>The next field which here is 0.5 is called the xfiles factor which defines
+how much of an interval may be made up of unknown values, while still being
+considered to be known. 0.5 means that half the values may be unknown. I&rsquo;m
+not sure about how this works, but I think it mostly applies if you store
+multiple values and then let RRDtool do some calculation to get the final
+value.</p>
+<p>The next field containing the value 1 is steps, which defines how many primary
+data points are used to build a consolidated data point. I think that for
+xfiles factor to have an effect, this has to be greater than 1.</p>
+<p>Then the final field is rows, which define how many values are kept. In this
+example where we keep 20 000 values, and we record one value every 300 seconds
+that works out to storing data for 69 days, 10 hours and 39 minutes. Or the
+oldest value in the archive will be from that many days and hours ago. This is
+nice if you want to create a graph that shows the measurements as they were
+2 months ago, but if you don&rsquo;t need that kind of precision there are other
+ways of doing this which I&rsquo;ll get back to.</p>
+<h3 id="rrd-for-interface-counters">RRD for interface counters<a href="#rrd-for-interface-counters" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>Next up is storing data from our network interface. Here we&rsquo;ll need two data-sources
+as we can store traffic both incoming and outgoing.</p>
+<p>Continuing with the example from before, they show this:</p>
+<pre tabindex="0"><code>        --step 300 \
+        DS:ds0:COUNTER:600:0:1250000000 \
+        DS:ds1:COUNTER:600:0:1250000000  \
+        RRA:AVERAGE:0.5:1:600 \
+        RRA:AVERAGE:0.5:6:700 \
+        RRA:AVERAGE:0.5:24:775 \
+        RRA:AVERAGE:0.5:288:797 \
+        RRA:MAX:0.5:1:600 \
+        RRA:MAX:0.5:6:700 \
+        RRA:MAX:0.5:24:775 \
+        RRA:MAX:0.5:288:797
+</code></pre><p>Here it makes sense to use the COUNTER data type instead of GAUGE. RRDtool
+has logic built in to handle values that wrap around when using this data
+type.</p>
+<p>One thing about this example I don&rsquo;t think makes sense is the 1250000000
+max value. It is 1 250 000 000 bytes, which works out to be 10 000 000 000 bits
+which looks like the network port speed, 10 GB/s. The interface counters we
+query with SNMP are either 32- or 64-bits and wrap around at 4 294 967 296 or
+18 446 744 073 709 551 616 bytes respectively. That last number is 18 quintillion,
+or 18 million million million bytes.</p>
+<p>In any case, they show how multiple archives can be defined with varying degree
+of precision for older data. The first RRA is similar to the CPU example, but
+only keeping an average of the data for about 2 days. The next is a little more
+interesting as it requires 6 values before storing one value as the average of the
+6. With 6 values and a step of 300, one value will be stored every 30 minutes.
+Then keeping 700 in this archive, it stores data for around 14.5 days. The next
+are one value every 2 hours times 775 which is 64.5 days and the last is one
+value per day for 797 days. Then they do the same for the MAX values in the
+recorded interval.</p>
+<p>I wrote all that as I&rsquo;ve been trying to make sense of it all, and I personally think
+those numbers are a little random so I&rsquo;ll be using other ones. You are now of
+course very welcome to tell me I haven&rsquo;t understood this at all and got everything
+completely wrong. I&rsquo;d welcome the learning oportunity! Please reach out on <a href="https://noexec.net/mastodon/">Mastodon</a>
+if I&rsquo;m mistaken and you can explain how this really works!</p>
+<h3 id="my-rrd-for-cpu">My RRD for CPU<a href="#my-rrd-for-cpu" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>Getting right into it, I defined the database for CPU load like this:</p>
+<pre tabindex="0"><code>        --step 60 \
+        DS:ds0:GAUGE:120:U:U \
+        RRA:LAST:0.5:1:1440 \
+        RRA:AVERAGE:0.5:5:1440 \
+        RRA:AVERAGE:0.5:10:1440 \
+        RRA:AVERAGE:0.5:20:1440 \
+        RRA:AVERAGE:0.5:30:1440
+</code></pre><p>In short, I aim to insert one value every minute, if more than two
+minutes has passed consider the value unknown, and I have the following archives:</p>
+<p>The actual values are stored for 24 hours, then I keep the 5 minute average
+for 5 days, 10 minute average for 10 days, 20 minute average for 20 days
+and 30 minute average for 30 days.</p>
+<h3 id="my-rrd-for-interface-counters">My RRD for interface counters<a href="#my-rrd-for-interface-counters" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>This is quite similar to the CPU database, just that I&rsquo;m also keeping
+the max value recorded:</p>
+<pre tabindex="0"><code>        --step 60 \
+        DS:ds0:COUNTER:120:0:U \
+        DS:ds1:COUNTER:120:0:U \
+        RRA:LAST:0.5:1:1440 \
+        RRA:AVERAGE:0.5:5:1440 \
+        RRA:AVERAGE:0.5:10:1440 \
+        RRA:AVERAGE:0.5:20:1440 \
+        RRA:AVERAGE:0.5:30:1440 \
+        RRA:MAX:0.5:1:1440 \
+        RRA:MAX:0.5:5:1440 \
+        RRA:MAX:0.5:10:1440 \
+        RRA:MAX:0.5:20:1440 \
+        RRA:MAX:0.5:30:1440
+</code></pre><p>I&rsquo;ve set minimum value to be 0, but maximum to be unknown so RRDtool won&rsquo;t
+perform any sanity checks on it.</p>
+<h2 id="getting-the-data">Getting the data<a href="#getting-the-data" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>I wrote about SNMP, what commands to use and the relevant oid&rsquo;s in my <a href="https://noexec.net/posts/2025/20250502-setup-snmpd/">previous post</a>.
+Please read that for more details.</p>
+<p>Since my VPS only has one CPU it is easy to get the data for it:</p>
+<pre tabindex="0"><code>$ snmp get -A &#34;Dash A pass&#34; -a SHA-256 -l authPriv -u user -X &#34;Dash X pass&#34; localhost hrProcessorLoad.1
+</code></pre><p>If you have more, you have multiple options. You can get each value individually
+and combine them all in a graph so you can see load across CPUs, or you can
+combine them and show the average. Instead of getting them each one by one
+you can list them all at once with the walk paramter as shown in the previous
+post, and then do some scripting magic to get the number(s) you want.</p>
+<p>For the interface counters I found it is a little more complex. Like for CPU
+the exact ID for the interface is needed, it can&rsquo;t be referenced by name, but
+I found that an interface can change ID. At least I think the Wireguard interface
+did, but that may be because I started and destroyed it a lot when doing some
+testing. I think it&rsquo;s fairly safe to assume that our main interface, vio0, will
+always be the first, but to make sure I do the following:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">runstats<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/get-interface-stats.sh <span class="nv">$1</span> <span class="nv">$2</span>
+</span></span><span class="line"><span class="cl">  <span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/get-interface-stats.sh <span class="nv">$3</span> <span class="nv">$4</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">ifids</span><span class="o">=</span><span class="k">$(</span>snmp walk -A <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AUTHPASS</span><span class="si">}</span><span class="s2">&#34;</span> -a SHA-256 -l authPriv -u <span class="si">${</span><span class="nv">USER</span><span class="si">}</span> -X <span class="s2">&#34;</span><span class="si">${</span><span class="nv">PRIVPASS</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">HOST</span><span class="si">}</span> ifDescr <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        <span class="p">|</span> grep -E <span class="s1">&#39;vio0|wg0&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        <span class="p">|</span> awk <span class="s1">&#39;{print $1&#34; &#34;$4}&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        <span class="p">|</span> cut -d<span class="s1">&#39;.&#39;</span> -f2<span class="k">)</span>
+</span></span><span class="line"><span class="cl">runstats <span class="nv">$ifids</span>
+</span></span></code></pre></div><p>I get the list of all interfaces with snmp walk, then grep for the
+interfaces I want, pick out their id and name in that order and call
+the script that gets interface stats with that as input.</p>
+<h3 id="32-vs-64-bit-counters">32 vs 64-bit counters<a href="#32-vs-64-bit-counters" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>Let&rsquo;s talk about 32 vs 64-bit counters. Both are available to
+read from for interface counters. The 32-bit counter for incoming
+traffic is called <code>ifInOctets.1</code> for interface 1, and the 64-bit
+counter for the same is called <code>ifHCInOctets.1</code>. The counters for
+outgoing traffic simply have <code>Out</code> in their name instead of <code>In</code>.</p>
+<p>Now what are the difference between them, or why would we use one over
+the other? One important aspect is that these counters only go up unless
+reset due to a reboot for instance, and that they wrap around, meaning
+start again from 0 when they exceed their max value.</p>
+<p>To take the 64-bit counter first, it goes up to 18 quintillion and that
+number is so large it&rsquo;s unlikely to wrap around in my lifetime. If I got
+my math right, at a constant 10 Gbit/s it would take over 460 years to
+exceed its max value.</p>
+<p>The 32-bit counter however, &ldquo;only&rdquo; goes up to around 4 GB before it
+wraps around, and that limit is quite easy to reach. So then, what
+happens if we read and store one value around 4 GB, and the next one
+is 1 GB? Fortunately RRDtool is &ldquo;aware&rdquo; of this, or more correctly has
+built-in logic to handle this, and is able to calculate how much the
+counter increased before it wrapped around. That means it can calculate
+the correct usage amount for the interval, instead of suddenly showing
+a negative number.</p>
+<p>This can be a problem if the intervals are long and/or the interfaces
+are high speed with a lot of traffic. If the counter has wrapped around
+multiple times between one reading and the next, RRDtool won&rsquo;t know and
+can&rsquo;t calculate that, and will return a number a lot lower than the actual
+usage. In this scenario it might be necessary to use the 64-bit counter.</p>
+<p>One final thing, if the 64-bit counter solves this quick wrap around
+problem, wouldn&rsquo;t it make sense to just always use it? Well, here the
+problem is that if the interface is reset somehow perhaps because of
+a reboot, RRDtool will see a new number lower than the previous and
+calculate how much traffic must have passed to cause it to wrap around.
+That gives a high peak on the graph, basically making it unreadable
+as long as it is within the graph interval.</p>
+<p>I see that this can be fixed by setting a max value or by using the
+data source type DERIVE instead of COUNTER, but that is a little
+beyond me still.</p>
+<p>Anyway, it&rsquo;s something to be aware of.</p>
+<h2 id="the-scripts">The scripts<a href="#the-scripts" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Putting it all together, here are the scripts I&rsquo;m currently using to
+record data. Since SNMP needs certain things like passwords, username
+and host on every command, I&rsquo;ve put that into its own file which I
+source at the beginning of all the scripts that need it:</p>
+<p><code>/home/user/rrdtool/env.sh</code></p>
+<pre tabindex="0"><code>USER=&#34;user&#34;
+AUTHPASS=&#34;Dash A pass&#34;
+PRIVPASS=&#34;Dash X pass&#34;
+HOST=&#34;localhost&#34;
+RRDFILES=&#34;/home/user/rrdtool/dbfiles&#34;
+RRDTOOL=&#34;/usr/local/bin/rrdtool&#34;
+</code></pre><p>Then I have a main script which calls the other scripts. This is the one
+I start from crontab every minute:</p>
+<p><code>/home/user/rrdtool/collect-stats.sh</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">. /home/user/rrdtool/env.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">SCRIPTS</span><span class="o">=</span><span class="s2">&#34;/home/user/rrdtool&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">runstats<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/get-interface-stats.sh <span class="nv">$1</span> <span class="nv">$2</span>
+</span></span><span class="line"><span class="cl">  <span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/get-interface-stats.sh <span class="nv">$3</span> <span class="nv">$4</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Get current cpu load</span>
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/get-cpu-load.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Get current counters for select interfaces</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ifids</span><span class="o">=</span><span class="k">$(</span>snmp walk -A <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AUTHPASS</span><span class="si">}</span><span class="s2">&#34;</span> -a SHA-256 -l authPriv -u <span class="si">${</span><span class="nv">USER</span><span class="si">}</span> -X <span class="s2">&#34;</span><span class="si">${</span><span class="nv">PRIVPASS</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">HOST</span><span class="si">}</span> ifDescr <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        <span class="p">|</span> grep -E <span class="s1">&#39;vio0|wg0&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        <span class="p">|</span> awk <span class="s1">&#39;{print $1&#34; &#34;$4}&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        <span class="p">|</span> cut -d<span class="s1">&#39;.&#39;</span> -f2<span class="k">)</span>
+</span></span><span class="line"><span class="cl">runstats <span class="nv">$ifids</span>
+</span></span></code></pre></div><p>I run the CPU stats first, to avoid it being affected by the rest of the
+stuff I am doing here, though I haven&rsquo;t checked if it makes a measurable
+difference.</p>
+<p><code>/home/user/rrdtool/get-cpu-load.sh</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">. /home/user/rrdtool/env.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">RRDCPU</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">RRDFILES</span><span class="si">}</span><span class="s2">/cpu.rrd&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">TIMESTAMP</span><span class="o">=</span><span class="k">$(</span>date <span class="s1">&#39;+%s&#39;</span> <span class="p">|</span> cut -c 1-9<span class="k">)</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># For 1 CPU only</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CPULOAD</span><span class="o">=</span><span class="k">$(</span>snmp get -A <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AUTHPASS</span><span class="si">}</span><span class="s2">&#34;</span> -a SHA-256 -l authPriv -u <span class="si">${</span><span class="nv">USER</span><span class="si">}</span> -X <span class="s2">&#34;</span><span class="si">${</span><span class="nv">PRIVPASS</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">HOST</span><span class="si">}</span> hrProcessorLoad.1 <span class="p">|</span> awk <span class="s1">&#39;{print $4}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">RRDCPU</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">RRDTOOL</span><span class="si">}</span> create <span class="si">${</span><span class="nv">RRDCPU</span><span class="si">}</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --step <span class="m">60</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        DS:ds0:GAUGE:120:U:U <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:LAST:0.5:1:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:AVERAGE:0.5:5:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:AVERAGE:0.5:10:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:AVERAGE:0.5:20:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:AVERAGE:0.5:30:1440
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">RRDTOOL</span><span class="si">}</span> update <span class="si">${</span><span class="nv">RRDCPU</span><span class="si">}</span> <span class="si">${</span><span class="nv">TIMESTAMP</span><span class="si">}</span>:<span class="si">${</span><span class="nv">CPULOAD</span><span class="si">}</span>
+</span></span></code></pre></div><p>I always check if the RRD file exists before trying to update it. If it doesn&rsquo;t
+exist, it will be created. It may be a little more work each time, but it
+means the script will work the first time, and I won&rsquo;t have to remember to
+create the database files first. It also means I can just delete the files
+if I want to start fresh, or move them out of the way to have them archived
+for instance.</p>
+<p>One thing to note here that I have not mentioned before is that RRDtool
+in addition to aggregating the data according to the consolidation function,
+will also perform normalization on the data. In other words, if values aren&rsquo;t
+stored at the exact time they are expected to be, RRDtool will guess what
+they would have been, if they had been.</p>
+<p>For another explanation of this, see this article: <a href="http://rrdtool.vandenbogaerdt.nl/process.php">Rates, normalizing and consolidating</a></p>
+<p>We can look at the data with the fetch command, and this is what it looks
+like when it is empty, not containing any values:</p>
+<pre tabindex="0"><code>$ rrdtool fetch cpu.rrd LAST
+1751219640: nan
+1751219700: nan
+1751219760: nan
+1751219820: nan
+1751219880: nan
+1751219940: nan
+1751220000: nan
+</code></pre><p>Now I can update the database with the value 10 at exactly an expected time like this:
+<code>rrdtool update cpu.rrd '1751219700:10'</code></p>
+<p>The database now contains this:</p>
+<pre tabindex="0"><code>$ rrdtool fetch cpu.rrd LAST
+1751219640: nan
+1751219700: 1.0000000000e+01
+1751219760: nan
+1751219820: nan
+1751219880: nan
+1751219940: nan
+1751220000: nan
+</code></pre><p>Now observe the results if I update the database 2 seconds after the expected time instead:</p>
+<pre tabindex="0"><code>$ rrdtool update cpu.rrd &#39;1751219762:20&#39;
+$ rrdtool update cpu.rrd &#39;1751219822:10&#39;
+$ rrdtool update cpu.rrd &#39;1751219882:30&#39;
+$ rrdtool update cpu.rrd &#39;1751219942:10&#39;
+$ rrdtool fetch cpu.rrd LAST
+1751219640: nan
+1751219700: 1.0000000000e+01
+1751219760: 2.0000000000e+01
+1751219820: 1.0333333333e+01
+1751219880: 2.9333333333e+01
+1751219940: 1.0666666667e+01
+1751220000: nan
+</code></pre><p>The next value, 20, is fine, but look at what happens to the values after that.
+The next 10 is stored as 10.3, while the 30 is stored as 29.33 and the final
+10 is stored as 10.6.</p>
+<p>It&rsquo;s not a huge difference and it&rsquo;s not exactly breaking anything, I just
+want these values to be exactly as I read them in. Part of the reason is
+that RRDtool can&rsquo;t really guess what happened in between, so it can&rsquo;t know
+if the value really was increasing or decreasing at the exact minute compared
+to when I made the update.</p>
+<p>So to achive exact values I fudge the timestamp a little bit with this line:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nv">TIMESTAMP</span><span class="o">=</span><span class="k">$(</span>date <span class="s1">&#39;+%s&#39;</span> <span class="p">|</span> cut -c 1-9<span class="k">)</span><span class="m">0</span>
+</span></span></code></pre></div><p>This gets unixtime in seconds, cuts of the last number and adds a 0 instead.
+As long as my script now runs within the first 9 seconds of the minute,
+the reading will be logged at exactly the minute.</p>
+<p>The line that updates the database is this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="si">${</span><span class="nv">RRDTOOL</span><span class="si">}</span> update <span class="si">${</span><span class="nv">RRDCPU</span><span class="si">}</span> <span class="si">${</span><span class="nv">TIMESTAMP</span><span class="si">}</span>:<span class="si">${</span><span class="nv">CPULOAD</span><span class="si">}</span>
+</span></span></code></pre></div><p>If you don&rsquo;t care about fudging the time like I do, replace <code>${TIMESTAMP}</code>
+with <code>N</code> and RRDtool will use whatever time is current time.</p>
+<p>Now on to getting the interface counters. This script is called twice,
+once for the vio0 interface, then again for the wg0 interface.</p>
+<p><code>/home/user/rrdtool/get-interface-stats.sh</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;Missing input: &lt;interface-id&gt; &lt;interface-name&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">. /home/user/rrdtool/env.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">INTERFACEID</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">INTERFACENAME</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">RRDFILE</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">RRDFILES</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">INTERFACENAME</span><span class="si">}</span><span class="s2">.rrd&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">IN</span><span class="o">=</span><span class="k">$(</span>snmp get -A <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AUTHPASS</span><span class="si">}</span><span class="s2">&#34;</span> -a SHA-256 -l authPriv -u <span class="si">${</span><span class="nv">USER</span><span class="si">}</span> -X <span class="s2">&#34;</span><span class="si">${</span><span class="nv">PRIVPASS</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">HOST</span><span class="si">}</span> ifInOctets.<span class="si">${</span><span class="nv">INTERFACEID</span><span class="si">}</span> <span class="p">|</span> awk <span class="s1">&#39;{print $4}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">OUT</span><span class="o">=</span><span class="k">$(</span>snmp get -A <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AUTHPASS</span><span class="si">}</span><span class="s2">&#34;</span> -a SHA-256 -l authPriv -u <span class="si">${</span><span class="nv">USER</span><span class="si">}</span> -X <span class="s2">&#34;</span><span class="si">${</span><span class="nv">PRIVPASS</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">HOST</span><span class="si">}</span> ifOutOctets.<span class="si">${</span><span class="nv">INTERFACEID</span><span class="si">}</span> <span class="p">|</span> awk <span class="s1">&#39;{print $4}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">RRDFILE</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">RRDTOOL</span><span class="si">}</span> create <span class="si">${</span><span class="nv">RRDFILE</span><span class="si">}</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --step <span class="m">60</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        DS:ds0:COUNTER:120:0:U <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        DS:ds1:COUNTER:120:0:U  <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:LAST:0.5:1:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:AVERAGE:0.5:5:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:AVERAGE:0.5:10:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:AVERAGE:0.5:20:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:AVERAGE:0.5:30:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:MAX:0.5:1:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:MAX:0.5:5:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:MAX:0.5:10:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:MAX:0.5:20:1440 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        RRA:MAX:0.5:30:1440
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">RRDTOOL</span><span class="si">}</span> update <span class="si">${</span><span class="nv">RRDFILE</span><span class="si">}</span> N:<span class="si">${</span><span class="nv">IN</span><span class="si">}</span>:<span class="si">${</span><span class="nv">OUT</span><span class="si">}</span>
+</span></span></code></pre></div><p>Here we update the database at current time and let RRDtool do its
+thing, since this counter will always be increasing. This also shows
+how to insert two values at once, simply by adding them to the line
+separated with a :.</p>
+<p>Now make sure all the scripts are executable and finally add the main script
+to crontab for the user you want to run it as:</p>
+<pre tabindex="0"><code>#minute hour    mday    month   wday    [flags] command
+*       *       *       *       *       -n /home/user/rrdtool/collect-stats.sh
+</code></pre><h2 id="graphs">Graphs<a href="#graphs" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>This post took a lot longer to write than I expected, I started it three days
+ago, as there was a lot to look into. I had cobbled together some scripts
+that were working, but to present them here I felt the need to clean them
+up a little. Then there was a lot to look into to make sure what I wrote
+wasn&rsquo;t completely wrong. And I think I learned a lot in the process and
+understand RRDtool a little better now.</p>
+<p>So the graphs will have to come later, I have to clean up those scripts too,
+and it will be its own post.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+    
+    
+      <a href="/posts/2025/20250502-setup-snmpd/" class="button inline next">
+         [<span class="button__text">Setup SNMP for measuring CPU load and network traffic</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

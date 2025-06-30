@@ -6,8 +6,15 @@
     <description>Recent content on noexec.net</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 02 May 2025 18:08:55 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 27 Jun 2025 16:36:57 +0200</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Setup RRDTool for CPU and network graphs</title>
+      <link>/posts/2025/20250627-setup-rrdtool/</link>
+      <pubDate>Fri, 27 Jun 2025 16:36:57 +0200</pubDate>
+      <guid>/posts/2025/20250627-setup-rrdtool/</guid>
+      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;Having installed SNMP, it is time to measure something, store the measurements&#xA;in a database and finally make some pretty graphs of it all. The tool I&amp;rsquo;m&#xA;using for all of that is RRDtool.&lt;/p&gt;&#xA;&lt;p&gt;RRDtool, or &amp;ldquo;round robin database tool&amp;rdquo; as it stands for, is a database&#xA;specifically for storing data in time series. The way I understand this&#xA;is that the database is essentially a fixed-length list, and that when&#xA;you add an item, an item will be removed so the list is always the same&#xA;length. The time series part means that a key is time. You measure&#xA;something at a given time, store it in the database at this point in time,&#xA;and the oldest element will be removed.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Setup SNMP for measuring CPU load and network traffic</title>
       <link>/posts/2025/20250502-setup-snmpd/</link>
