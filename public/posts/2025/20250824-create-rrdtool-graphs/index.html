@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Creating graphs with RRDtool :: noexec.net</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Finally, we&#39;re at the last stretch of what ended up being a 3-part series
+on installing, configuring and using SNMP and RRDtool to get some simple
+graps for CPU load and network traffic." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="/posts/2025/20250824-create-rrdtool-graphs/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="/css/code.min.4f0ccc8439f99bf7f7970298556b94011aabc1fcae743b6842fc3361a2da9ea3.css">
+
+  
+  <link rel="stylesheet" href="/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="/css/main.min.15870410d15d02abd22fb5ef00996f65a00d04b3a7435e9f83831c7c2298de88.css">
+
+  
+  <link rel="stylesheet" href="/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Creating graphs with RRDtool">
+<meta property="og:description" content="Finally, we&#39;re at the last stretch of what ended up being a 3-part series
+on installing, configuring and using SNMP and RRDtool to get some simple
+graps for CPU load and network traffic." />
+<meta property="og:url" content="/posts/2025/20250824-create-rrdtool-graphs/" />
+<meta property="og:site_name" content="noexec.net" />
+
+  <meta property="og:image" content="/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2025-08-24 12:15:12 &#43;0200 CEST" />
+
+
+
+
+
+
+
+
+
+<link rel="preload" href="/fonts/FiraCode-Latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="me" href="https://mastodon.bsd.cafe/@noexec">
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    noexec.net
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about/">about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/">mastodon</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about/" >about</a></li>
+        
+      
+        
+          <li><a href="/mastodon/" >mastodon</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="/posts/2025/20250824-create-rrdtool-graphs/">Creating graphs with RRDtool</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2025-08-24</time></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>Finally, we&rsquo;re at the last stretch of what ended up being a 3-part series
+on installing, configuring and using SNMP and RRDtool to get some simple
+graps for CPU load and network traffic.</p>
+<p>I&rsquo;ll continue dissecting the OpenBSD.Amsterdam setup as it&rsquo;s what I&rsquo;ve been
+doing so far, but now we can start to be a little more creative. With SNMP
+it was about setting it up so we can collect system data from it. We could
+have set up &ldquo;traps&rdquo; to send messages to other system if certain thresholds
+were reached, but I might come back to that. With SNMP set up with a user,
+there wasn&rsquo;t much more to it.</p>
+<p>With RRDtool, the first part was about getting the data and storing them in
+databases. Once we have the databases defined which was mainly about how often
+we&rsquo;ll collect data, how long we&rsquo;ll store them for, and a little bit of what
+type of data we&rsquo;ll collect, that was it. Changing this set up isn&rsquo;t hard, but
+it means you can lose some of what has been collected as there isn&rsquo;t, to the
+best of my knowledge, a way to change an existing database. Instead a new one
+will have to be created and then old data can be exported from the old
+database and imported into the new.</p>
+<p>When it comes to creating graphs, which is about reading the data we have
+stored and creating visual representations of them, we can be more creative.
+Since we are only reading data, we won&rsquo;t break anything and it&rsquo;s easier to
+experiment.</p>
+<h2 id="the-scripts">The scripts<a href="#the-scripts" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>I&rsquo;ve split up &ldquo;gathering the data&rdquo; and &ldquo;creating the graphs&rdquo; into separate
+scripts. This gives me the oportunity to run them at different intervals.
+While I collect data every minute, I can select to create the graphs every
+5 minutes, every 15 minutes, every hour, and perhaps not at night when I&rsquo;m
+likely to be sleeping. Or it can be run every minute, same as the gathering
+scripts. So many choices.</p>
+<p>Like with gathering the data, I have a main script which creates the graphs and
+it&rsquo;s this I run from crontab:</p>
+<p><code>/home/user/rrdtool/create-all-graphs.sh</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1"># We&#39;re in no hurry, wait for other jobs to finish</span>
+</span></span><span class="line"><span class="cl">sleep <span class="m">5</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">SCRIPTS</span><span class="o">=</span><span class="s2">&#34;/home/user/rrdtool&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/system-stats.sh &gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/create-cpu-graphs.sh &gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/create-interface-graphs.sh vio0 &gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">SCRIPTS</span><span class="si">}</span>/create-interface-graphs.sh wg0 &gt;/dev/null
+</span></span></code></pre></div><p>If you have more interfaces, or your interfaces are named differently you&rsquo;ll
+need to change the input to the <code>create-interface-graphs</code> script. I&rsquo;ve been
+thinking about how to handle this more dynamically, but shell scripting isn&rsquo;t
+what I&rsquo;m best at. I often long for a programming language where I can for
+instance itereate through arrays when doing something like this, but it may be
+due to my limited knowledge of shell scripting. It seems to be possible to write
+a <a href="https://github.com/crossbowerbt/awk-webserver">webserver in awk</a> so I&rsquo;m sure it can be solved without resorting
+to python. But do I want to learn awk, or do I want to learn python?</p>
+<p>To continue, the first thing the script does is run &ldquo;system-stats&rdquo;, which simply
+gets current uptime as well as OS version and outputs them to files. These
+will be read and used when creating the graphs. I&rsquo;m using SNMP for this as it
+seemed like the simplest and most portable way to do it. Uptime can possibly be
+found with the <code>uptime</code> command for instance, but it may require more parsing
+and scripting. The result from <code>hrSystemUptime.0</code> isn&rsquo;t perfect as it will
+always say &ldquo;day&rdquo; and not &ldquo;days&rdquo; where applicable, but I&rsquo;ve deemed it good
+enough for me. <code>sysDescr.0</code> could be replaced by <code>uname</code> but again, it may
+require more scripting and parsing.</p>
+<p>One thing to note is that RRDtool tries to interpret <code>:</code> in values and will
+crash if something goes wrong, that&rsquo;s why there is a sed command to change from
+<code>:</code> to <code>\:</code> (escaping) which I hope readers are familiar with.</p>
+<p><code>/home/user/rrdtool/system-stats.sh</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">. /home/user/rrdtool/env.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">snmp get -A <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AUTHPASS</span><span class="si">}</span><span class="s2">&#34;</span> -a SHA-256 -l authPriv -u <span class="si">${</span><span class="nv">USER</span><span class="si">}</span> -X <span class="s2">&#34;</span><span class="si">${</span><span class="nv">PRIVPASS</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">HOST</span><span class="si">}</span> hrSystemUptime.0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="p">|</span> awk -F<span class="s2">&#34;[)]&#34;</span> <span class="s1">&#39;{print $2}&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="p">|</span> sed <span class="s1">&#39;s/:/\\:/g&#39;</span> &gt;<span class="si">${</span><span class="nv">DBFILES</span><span class="si">}</span>/uptime.txt
+</span></span><span class="line"><span class="cl">snmp get -A <span class="s2">&#34;</span><span class="si">${</span><span class="nv">AUTHPASS</span><span class="si">}</span><span class="s2">&#34;</span> -a SHA-256 -l authPriv -u <span class="si">${</span><span class="nv">USER</span><span class="si">}</span> -X <span class="s2">&#34;</span><span class="si">${</span><span class="nv">PRIVPASS</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">HOST</span><span class="si">}</span> sysDescr.0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="p">|</span> awk <span class="s1">&#39;{print $6,$7}&#39;</span> &gt;<span class="si">${</span><span class="nv">DBFILES</span><span class="si">}</span>/version.txt
+</span></span></code></pre></div><p>We&rsquo;ve previously used <code>rrdtool create</code> to create the database containing the
+archives, then we used <code>rrdtool update</code> to insert our measurements into the
+archives, and now we&rsquo;re finally going to use <code>rrdtool graph</code> to create some
+graphs to visualize all we&rsquo;ve done so far. This is where the fun begins.</p>
+<p>This little script will create a graph for CPU usage similar to what
+OpenBSD.Amsterdam have on their page for their hosts:</p>
+<p><code>/home/user/rrdtool/create-cpu-graphs.sh</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nv">HOST</span><span class="o">=</span><span class="s2">&#34;obsd-web&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">RRDCPU</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">DBFILES</span><span class="si">}</span><span class="s2">/cpu.rrd&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">IMAGEDIR</span><span class="o">=</span><span class="s2">&#34;/var/www/htdocs/rrdtool&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">IMAGEBASECPU</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">IMAGEDIR</span><span class="si">}</span><span class="s2">/cpu&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">UPTIME</span><span class="o">=</span><span class="k">$(</span>cat <span class="si">${</span><span class="nv">DBFILES</span><span class="si">}</span>/uptime.txt<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">VERSION</span><span class="o">=</span><span class="k">$(</span>cat <span class="si">${</span><span class="nv">DBFILES</span><span class="si">}</span>/version.txt<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">NOW</span><span class="o">=</span><span class="k">$(</span>date <span class="s2">&#34;+%Y-%m-%d %H\:%M\:%S %Z&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># cpu usage last 6 hours</span>
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">RRDTOOL</span><span class="si">}</span> graph <span class="si">${</span><span class="nv">IMAGEBASECPU</span><span class="si">}</span>-6h.png <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --start -21600 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --title <span class="s2">&#34;</span><span class="si">${</span><span class="nv">HOST</span><span class="si">}</span><span class="s2"> - </span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2"> - CPU&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --vertical-label <span class="s2">&#34;CPU load&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --border <span class="m">0</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        DEF:CPU<span class="o">=</span><span class="si">${</span><span class="nv">RRDCPU</span><span class="si">}</span>:ds0:LAST <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        AREA:CPU#FFCC00 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        LINE2:CPU#CC0033:<span class="s2">&#34;CPU&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:CPU:MAX:<span class="s2">&#34;Max\:%2.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:CPU:AVERAGE:<span class="s2">&#34;Average\:%2.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:CPU:MIN:<span class="s2">&#34;Min\:%2.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:CPU:LAST:<span class="s2">&#34; Current\:%2.2lf %s\n&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        COMMENT:<span class="s2">&#34; \\n&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        COMMENT:<span class="s2">&#34;  Up for </span><span class="si">${</span><span class="nv">UPTIME</span><span class="si">}</span><span class="s2"> at </span><span class="si">${</span><span class="nv">NOW</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span></code></pre></div><p>There is quite a lot going on here. I&rsquo;ve created an &ldquo;imagebase&rdquo; variable
+which contains the path to where the graph should be written and most of the
+filename, to make it easy to make graphs for different periods.</p>
+<p><code>--start -21600</code> is the start point for the graph, 21600 seconds or 6 hours
+in the past. This gives us a rolling graph, always for the last 6 hours.</p>
+<p><code>--title &quot;${HOST} - ${VERSION} - CPU&quot;</code> sets the title on the graph and you can
+put whatever you want here, really. It is optional and can be omitted. I use
+hostname in short form and the OS version as well as specifying that is a CPU
+graph. The last bit may seem redundant, but systems using <code>net-snmp</code> like
+FreeBSD does also have access to load averages for the system. I like to have
+those graphs in the same color, and so I specify which is what in the title.</p>
+<p><code>--vertical-label &quot;CPU load&quot;</code> is an optional, explanatory text, which will be
+written to the left of the graph. It can be omitted, but I think it looks nicer
+with it there.</p>
+<p>Then we specify that we don&rsquo;t want a border around the image with <code>--border 0</code>.</p>
+<p>This has been mostly about the canvas so far, the place we&rsquo;ll use to draw our
+graph, and there&rsquo;s still a lot more that could have been configured, like its
+size and colors. We&rsquo;ll just use the defaults for now, but get back to colors
+at least in the more creative section.</p>
+<p>The next part is about getting the data we want to draw, and a little bit about
+how to draw it.</p>
+<p><code>DEF:CPU=${RRDCPU}:ds0:LAST</code></p>
+<p>This command fetches data from the RRD file RRDCPU defined earlier, and stores
+the value in the variable CPU. It fetches data from the first data source, ds0,
+using the consolidation function LAST for each value.</p>
+<p>Next up comes the part where we decide how to draw things.</p>
+<p><code>AREA:CPU#FFCC00</code></p>
+<p>This specifies that for whatever the value CPU has, we want to fill the area of
+CPU with the color #FFCC00. In more detail, area means that if the value is 5,
+everything from 0 to 5 will be filled with the color we specified.</p>
+<p><code>LINE2:CPU#CC0033:&quot;CPU&quot;</code></p>
+<p>This specifies that we will draw a line with a width of 2 for the value in CPU
+in the color #CC0033. It also specifies that we will write out &ldquo;CPU&rdquo; on the
+graph as the legend, which gives us a box with its color (red) next to it
+explaining which element it is for. This is not so useful here, but will be
+when we have multiple elements in the graph, like for incoming and outgoing
+traffic.</p>
+<pre tabindex="0"><code>GPRINT:CPU:MAX:&#34;Max\:%2.2lf %s&#34;
+GPRINT:CPU:AVERAGE:&#34;Avg\:%2.2lf %s&#34;
+GPRINT:CPU:MIN:&#34;Min\:%2.2lf %s&#34;
+GPRINT:CPU:LAST:&#34; Current\:%2.2lf %s\n&#34;
+</code></pre><p>This uses the GPRINT function to write text below the graph. Here we write out
+the MAX, AVERAGE, MIN and LAST value of CPU with 2 decimals precision.</p>
+<p>Then we add a comment containing server uptime as well as current time. This
+lets us see if the server has restarted for instance, as well as when the graph
+was last updated, so we can see if our scripts are running or not.</p>
+<p>Now let&rsquo;s create some graphs for the interface counters, which requires
+interface name as input:</p>
+<p><code>/home/user/rrdtool/create-interface-graphs.sh</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;Missing input: &lt;interface-name&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">INTERFACENAME</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">HOST</span><span class="o">=</span><span class="s2">&#34;obsd-web&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">RRDFILEIF</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">DBFILES</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">INTERFACENAME</span><span class="si">}</span><span class="s2">.rrd&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">IMAGEDIR</span><span class="o">=</span><span class="s2">&#34;/var/www/htdocs/rrdtool&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">IMAGEBASEIF</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">IMAGEDIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">INTERFACENAME</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">UPTIME</span><span class="o">=</span><span class="k">$(</span>cat <span class="si">${</span><span class="nv">DBFILES</span><span class="si">}</span>/uptime.txt<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">VERSION</span><span class="o">=</span><span class="k">$(</span>cat <span class="si">${</span><span class="nv">DBFILES</span><span class="si">}</span>/version.txt<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">NOW</span><span class="o">=</span><span class="k">$(</span>date <span class="s2">&#34;+%Y-%m-%d %H\:%M\:%S %Z&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">RRDTOOL</span><span class="si">}</span> graph <span class="si">${</span><span class="nv">IMAGEBASEIF</span><span class="si">}</span>-6h.png <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --start -21600 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --title <span class="s2">&#34;</span><span class="si">${</span><span class="nv">HOST</span><span class="si">}</span><span class="s2"> - </span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2"> - </span><span class="si">${</span><span class="nv">INTERFACENAME</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --vertical-label <span class="s2">&#34;Bits per Second&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --border <span class="m">0</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        DEF:IN<span class="o">=</span><span class="si">${</span><span class="nv">RRDFILEIF</span><span class="si">}</span>:ds0:AVERAGE <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        DEF:OUT<span class="o">=</span><span class="si">${</span><span class="nv">RRDFILEIF</span><span class="si">}</span>:ds1:AVERAGE <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        CDEF:BITS_IN<span class="o">=</span><span class="s2">&#34;IN,8,*&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        CDEF:BITS_OUT<span class="o">=</span><span class="s2">&#34;OUT,8,*&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        AREA:BITS_IN#00FF00:<span class="s2">&#34;In &#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:BITS_IN:MAX:<span class="s2">&#34;Max\:%5.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:BITS_IN:AVERAGE:<span class="s2">&#34;Avg\:%5.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:BITS_IN:MIN:<span class="s2">&#34;Min\:%5.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:BITS_IN:LAST:<span class="s2">&#34; Current\:%5.2lf %s\n&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        LINE2:BITS_OUT#0000FF:<span class="s2">&#34;Out&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:BITS_OUT:MAX:<span class="s2">&#34;Max\:%5.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:BITS_OUT:AVERAGE:<span class="s2">&#34;Avg\:%5.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:BITS_OUT:MIN:<span class="s2">&#34;Min\:%5.2lf %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        GPRINT:BITS_OUT:LAST:<span class="s2">&#34; Current\:%5.2lf %s\n&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        COMMENT:<span class="s2">&#34;  Up for </span><span class="si">${</span><span class="nv">UPTIME</span><span class="si">}</span><span class="s2"> at </span><span class="si">${</span><span class="nv">NOW</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span></code></pre></div><p>A lot is similar, but there are also some new things. I set the interface name
+in the title so it&rsquo;s easy to see what interface I&rsquo;m looking at the stats for.</p>
+<p>Then we have two <code>DEF</code> lines, as we now have two data sources, one for incoming
+traffic and one for outgoing.</p>
+<p>Next we have CDEF, which performs calculations on the <code>DEF</code> values and returns
+the new result. This might look strange and/or unfamiliar as it uses reverse
+polish notation, but it is quite clever.</p>
+<pre tabindex="0"><code>DEF:IN=${RRDFILEIF}:ds0:AVERAGE \
+DEF:OUT=${RRDFILEIF}:ds1:AVERAGE \
+CDEF:BITS_IN=&#34;IN,8,*&#34; \
+CDEF:BITS_OUT=&#34;OUT,8,*&#34; \
+</code></pre><p>To try to explain in full what is going on here, we first define <code>IN</code> with the
+first data source value from the specified file using the &ldquo;average&rdquo;
+consolidation function. Then we do the same for the second data source, which
+is outgoing data.</p>
+<p>Next we create a new variable called &ldquo;BITS_IN&rdquo;, which does something with the
+&ldquo;IN&rdquo; value. If you remember from when we got data with SNMP, the counter was
+called something with &ldquo;octets&rdquo; in it, which usually is a byte. Given there
+are 8 bits in a byte, we get number of bits by multiplying bytes by 8, and that
+is what this does: <code>IN,8,*</code>.</p>
+<p>RRDtool reads the values from left to right, pushing them onto a stack until
+it reaches an operator. Then what happens depends on the operator. The operator
+in question here is the <code>*</code> or multiply sign. This operator gets the previous
+two values from the stack, which is the value of IN and 8 and multiplies them.
+Then that value is returned to the stack, and since there are no more values
+or operators, we are done and the value is returned.</p>
+<p>Then as you can see, instead of creating a graph based on the &ldquo;raw&rdquo; values from
+DEF, we used the calculated values instead:</p>
+<p><code>AREA:BITS_IN#00FF00:&quot;In &quot;</code></p>
+<p>and</p>
+<p><code>LINE2:BITS_OUT#0000FF:&quot;Out&quot;</code></p>
+<p>Incoming data are colored in green and is drawn using area, while outgoing data
+is drawn on top of the area using a blue line. Note that order matters here, if
+we had everything related to out listed first and then IN, the blue line would
+have been overwritten and invisible every time the green incoming area is
+bigger than the outgoing values.</p>
+<p>I think that is it for now. I&rsquo;ve spent some time cleaning up my scripts so the
+next step is publishing them so they can be downloaded and experimented with,
+I think that makes understanding this a lot easier. Then I&rsquo;ve also experimented
+with different colors and some more advanced calculations which definitely
+warrants a post of its own. I also need to figure out how to add images to the
+blogging solution, so instead of a wall of text with explanations the actual
+results can be seen.</p>
+<p>Hopefully that won&rsquo;t take me as long as it took me to get this post out of the
+way.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+    
+    
+      <a href="/posts/2025/20250627-setup-rrdtool/" class="button inline next">
+         [<span class="button__text">Setup RRDTool for CPU and network graphs</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

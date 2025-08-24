@@ -6,8 +6,15 @@
     <description>Recent content in Posts on noexec.net</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 27 Jun 2025 16:36:57 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 24 Aug 2025 12:15:12 +0200</lastBuildDate>
     <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Creating graphs with RRDtool</title>
+      <link>/posts/2025/20250824-create-rrdtool-graphs/</link>
+      <pubDate>Sun, 24 Aug 2025 12:15:12 +0200</pubDate>
+      <guid>/posts/2025/20250824-create-rrdtool-graphs/</guid>
+      <description>&lt;p&gt;Finally, we&amp;rsquo;re at the last stretch of what ended up being a 3-part series&#xA;on installing, configuring and using SNMP and RRDtool to get some simple&#xA;graps for CPU load and network traffic.&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;ll continue dissecting the OpenBSD.Amsterdam setup as it&amp;rsquo;s what I&amp;rsquo;ve been&#xA;doing so far, but now we can start to be a little more creative. With SNMP&#xA;it was about setting it up so we can collect system data from it. We could&#xA;have set up &amp;ldquo;traps&amp;rdquo; to send messages to other system if certain thresholds&#xA;were reached, but I might come back to that. With SNMP set up with a user,&#xA;there wasn&amp;rsquo;t much more to it.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Setup RRDTool for CPU and network graphs</title>
       <link>/posts/2025/20250627-setup-rrdtool/</link>
